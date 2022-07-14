@@ -1,0 +1,8 @@
+{
+  "name": "eese",
+  "version": "1.0.0",
+  "description": "Express Event Sourcing Example",
+  "main": "index.js",
+  "author": "Jakob Durstberger",
+  "license": "MIT"
+}
