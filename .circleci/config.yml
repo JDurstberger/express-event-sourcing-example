@@ -4,6 +4,12 @@ defaults: &defaults
   docker:
     - image: ruby:3.1.1
 
+only_main: &only_main
+  filters:
+    branches:
+      only:
+        - main
+
 commands:
   configure_runner:
     steps:
@@ -17,3 +23,10 @@ jobs:
       - checkout
       - configure_runner
       - run: ./scripts/ci/steps/test.sh
+
+workflows:
+  version: 2
+  pipeline:
+    jobs:
+      - test:
+          <<: *only_main
