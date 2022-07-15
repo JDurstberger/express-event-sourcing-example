@@ -1,0 +1,3 @@
+---
+component: "eese-service"
+deployment_identifier: "%{deployment_type}-%{deployment_label}"

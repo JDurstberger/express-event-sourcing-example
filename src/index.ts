@@ -1,6 +1,9 @@
 import {app} from './app'
+import {loadConfig} from "./configuration";
 
-const port = 3000
+const configuration = loadConfig()
+
+const port = configuration.service.port
 app.listen(
   port,
   () => console.log(`App started on port ${port}`)

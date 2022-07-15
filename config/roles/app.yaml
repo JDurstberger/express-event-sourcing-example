@@ -1,0 +1,3 @@
+---
+environment:
+  EESE_SERVICE_SERVICE_PORT: "%{hiera('service_port')}"
