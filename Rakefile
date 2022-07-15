@@ -1,10 +1,22 @@
+require 'rake'
+
 task :default do
   Rake::Task[:'check:all'].invoke
   Rake::Task[:'test:all'].invoke
 end
 
+namespace :app do
+  namespace :dependencies do
+    desc "Install dependencies required to build the app"
+    task :install do
+      puts("Installing NPM dependencies defined in package.json")
+      sh('yarn install')
+    end
+  end
+end
+
 namespace :check do
-  task :lint do
+  task :lint => [:'app:dependencies:install'] do
     sh('yarn lint')
   end
 
@@ -14,7 +26,7 @@ namespace :check do
 end
 
 namespace :test do
-  task :component do
+  task :component => [:'app:dependencies:install'] do
     sh('yarn test-component')
   end
 

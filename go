@@ -25,6 +25,16 @@ function loose_version() {
 
 ruby_full_version="$(cat "$project_dir"/.ruby-version)"
 ruby_loose_version="$(loose_version "$ruby_full_version")"
+node_version="$(cat "$project_dir"/.node-version)"
+
+echo "Configuring NVM if present."
+nvm_script="/usr/local/opt/nvm/nvm.sh"
+if [ -s "$nvm_script" ]; then
+    set +e
+    source "$nvm_script" >/dev/null 2>&1
+    nvm install "$node_version" >/dev/null 2>&1
+    set -e
+fi
 
 if [[ "$skip_checks" == "no" ]]; then
 echo "Checking for system dependencies."
@@ -35,6 +45,16 @@ echo "Checking for system dependencies."
 
   if ! type bundler >/dev/null 2>&1; then
     echo "This codebase requires Bundler."
+    missing_dependency="yes"
+  fi
+
+  if ! type node >/dev/null 2>&1 || ! node --version | grep -q "$node_version"; then
+    echo "This codebase requires Node $node_version"
+    missing_dependency="yes"
+  fi
+
+  if ! type yarn >/dev/null 2>&1; then
+    echo "This codebase requires yarn."
     missing_dependency="yes"
   fi
 
