@@ -4,5 +4,29 @@
   "description": "Express Event Sourcing Example",
   "main": "index.js",
   "author": "Jakob Durstberger",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/src/index.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
+    "test-component": "jest ./__test__/component",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jest": "^28.1.5",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "concurrently": "^7.2.2",
+    "eslint": "^8.19.0",
+    "eslint-plugin-jest": "^26.6.0",
+    "jest": "^28.1.3",
+    "nodemon": "^2.0.19",
+    "supertest": "^6.2.4",
+    "ts-jest": "^28.0.6",
+    "typescript": "^4.7.4"
+  }
 }
