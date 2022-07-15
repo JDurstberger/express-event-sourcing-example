@@ -1,0 +1,19 @@
+version: 2.1
+
+defaults: &defaults
+  docker:
+    - image: ruby:3.1.1
+
+commands:
+  configure_runner:
+    steps:
+      - run: ./scripts/ci/common/install-nvm.sh
+      - run: ./scripts/ci/common/install-yarn.sh
+
+jobs:
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - configure_runner
+      - run: ./scripts/ci/steps/test.sh
