@@ -31,7 +31,6 @@ echo "Configuring NVM if present."
 nvm_script="/usr/local/opt/nvm/nvm.sh"
 
 if [ -s "$nvm_script" ]; then
-    echo "NVM is present"
     set +e
     source "$nvm_script" >/dev/null 2>&1
     nvm install "$node_version" >/dev/null 2>&1

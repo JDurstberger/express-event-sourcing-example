@@ -1,17 +1,22 @@
-import express, {Request} from 'express';
+import express from 'express';
+import {Configuration} from "./configuration";
 
-const app = express()
+import {createDiscoveryResource} from "./discovery";
+import {createDatabase} from "./shared/database";
+import {createThingResource} from "./thing";
+import {createEventsResource} from "./events";
 
-const buildSelf = (request: Request) =>
-  request.protocol+"://"+request.headers['host'] + request.url
+export const createApp = async (configuration: Configuration) => {
+  const app = express()
 
-app.get(
-  '/',
-  (request: Request, response) => {
-    return response.json({_links: {self: {href: buildSelf(request)}}})
+  const database = await createDatabase(configuration.database)
+
+  createDiscoveryResource(app)
+  createThingResource(app, {database})
+  createEventsResource(app, {database})
+
+  return {
+    app,
+    shutDown: async () => await database.pool.end()
   }
-)
-
-export {
-  app
 }

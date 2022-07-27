@@ -1,0 +1,1 @@
+export {createThingResource} from './resource'

@@ -1,7 +1,7 @@
 ---
 service_port: 9100
 database_host: "localhost"
-database_port: 9101
+database_port: 9102
 database_name: "eese_service"
 database_user: "admin"
 database_password: "8qH3AkG24syBDjPpjSq2MpeRYzH7WoNeCChP1KZuh8RmXSHdwDEaiyMqTtzyR9Tf"

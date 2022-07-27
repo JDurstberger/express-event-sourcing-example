@@ -1,3 +1,5 @@
 ---
 component: "eese-service"
 deployment_identifier: "%{deployment_type}-%{deployment_label}"
+
+database_version: "14.4"

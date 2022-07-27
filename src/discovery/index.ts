@@ -1,0 +1,1 @@
+export {createDiscoveryResource} from './resource'

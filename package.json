@@ -5,28 +5,42 @@
   "main": "index.js",
   "author": "Jakob Durstberger",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "start": "node dist/src/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
-    "test-component": "jest ./__test__/component",
-    "lint": "eslint ."
+    "clean": "rm -rf dist/ && rm -f .env && rm -rf node_modules/",
+    "start": "node --es-module-specifier-resolution=node dist/index.js",
+    "compile": "yarn tsc",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon --experimental-specifier-resolution=node -q dist/index.js\"",
+    "test-component": "jest --runInBand ./__test__/component",
+    "test-unit": "jest ./__test__/unit",
+    "lint": "eslint --fix --exit-on-fatal-error --max-warnings 0 ."
   },
   "dependencies": {
-    "express": "^4.18.1"
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "moment": "^2.29.4",
+    "pg": "^8.7.3",
+    "postgres-migrations": "^5.3.0",
+    "ramda": "^0.28.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
-    "@types/jest": "^28.1.5",
+    "@types/jest": "^28.0.0",
+    "@types/node": "^18.6.1",
+    "@types/pg": "^8.6.5",
+    "@types/ramda": "^0.28.15",
     "@types/supertest": "^2.0.12",
-    "@typescript-eslint/eslint-plugin": "^5.30.6",
-    "@typescript-eslint/parser": "^5.30.6",
-    "concurrently": "^7.2.2",
-    "eslint": "^8.19.0",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "concurrently": "^7.3.0",
+    "eslint": "^8.20.0",
     "eslint-plugin-jest": "^26.6.0",
     "jest": "^28.1.3",
     "nodemon": "^2.0.19",
     "supertest": "^6.2.4",
-    "ts-jest": "^28.0.6",
+    "ts-jest": "^28.0.7",
     "typescript": "^4.7.4"
   }
 }

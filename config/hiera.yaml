@@ -9,4 +9,5 @@
 :hierarchy:
   - "roles/%{role}"
   - "deployments/%{deployment_type}-%{deployment_label}"
+  - "secrets/database/%{deployment_type}-%{deployment_label}"
   - "defaults"
