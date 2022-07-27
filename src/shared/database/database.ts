@@ -1,7 +1,7 @@
-import {DatabaseConfiguration} from "../../configuration";
-import {migrate} from "postgres-migrations";
+import { DatabaseConfiguration } from '../../configuration'
+import { migrate } from 'postgres-migrations'
 import { Pool } from 'pg'
-import pg from 'pg';
+import pg from 'pg'
 
 export type Database = {
   pool: Pool
@@ -15,13 +15,15 @@ const runMigrations = async (config: DatabaseConfiguration) => {
     host: config.host,
     port: config.port,
     ensureDatabaseExists: true,
-    defaultDatabase: "postgres"
+    defaultDatabase: 'postgres',
   }
 
-  await migrate(dbConfig, "./src/shared/database/migrations")
+  await migrate(dbConfig, './src/shared/database/migrations')
 }
 
-export const createDatabase = async (config: DatabaseConfiguration): Promise<Database> => {
+export const createDatabase = async (
+  config: DatabaseConfiguration,
+): Promise<Database> => {
   await runMigrations(config)
   return {
     pool: new pg.Pool({
@@ -30,6 +32,6 @@ export const createDatabase = async (config: DatabaseConfiguration): Promise<Dat
       database: config.name,
       password: config.password,
       port: config.port,
-    })
+    }),
   }
 }

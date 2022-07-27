@@ -60,7 +60,12 @@ namespace :check do
     sh('yarn lint')
   end
 
+  task :format => [:'app:dependencies:install'] do
+    sh('yarn format')
+  end
+
   task :all do
+    Rake::Task['check:format'].invoke
     Rake::Task['check:lint'].invoke
   end
 end

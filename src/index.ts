@@ -1,14 +1,13 @@
-import {createApp} from './app'
-import {loadConfiguration} from "./configuration";
+import { createApp } from './app'
+import { loadConfiguration } from './configuration'
 
 const configuration = loadConfiguration()
 
 const port = configuration.service.port
-const {app, shutDown} = await createApp(configuration)
+const { app, shutDown } = await createApp(configuration)
 
-const server = app.listen(
-  port,
-  () => console.log(`App started on port ${port}`)
+const server = app.listen(port, () =>
+  console.log(`App started on port ${port}`),
 )
 
 process.on('SIGTERM', () => {

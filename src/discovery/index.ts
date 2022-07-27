@@ -1,1 +1,1 @@
-export {createDiscoveryResource} from './resource'
+export { createDiscoveryResource } from './resource'

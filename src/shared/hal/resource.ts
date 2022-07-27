@@ -1,4 +1,4 @@
-import {isEmpty, mapObjIndexed, toPairs} from "ramda";
+import { isEmpty, mapObjIndexed, toPairs } from 'ramda'
 
 export type Link = {
   readonly href: string
@@ -21,22 +21,17 @@ export class Resource {
     return new Resource({}, {}, {})
   }
 
-  constructor(
-    links: Links,
-    resources: Resources,
-    properties: Properties,
-  ) {
+  constructor(links: Links, resources: Resources, properties: Properties) {
     this.links = links
     this.resources = resources
     this.properties = properties
   }
 
-
   addLink(rel: string, uri: string): Resource {
     return new Resource(
       {
         ...this.links,
-        [rel]: {href: uri}
+        [rel]: { href: uri },
       },
       this.resources,
       this.properties,
@@ -45,9 +40,9 @@ export class Resource {
 
   addLinks(rawLinks: Record<string, string>) {
     return toPairs(rawLinks).reduce(
-      (resource: Resource, [rel, uri]) =>
-        resource.addLink(rel, uri),
-      this)
+      (resource: Resource, [rel, uri]) => resource.addLink(rel, uri),
+      this,
+    )
   }
 
   getHref(rel: string): string | undefined {
@@ -59,14 +54,10 @@ export class Resource {
   }
 
   addProperty(key: string, value: Property) {
-    return new Resource(
-      this.links,
-      this.resources,
-      {
-        ...this.properties,
-        [key]: value
-      },
-    )
+    return new Resource(this.links, this.resources, {
+      ...this.properties,
+      [key]: value,
+    })
   }
 
   getResource(key: string): EmbeddedResource | undefined {
@@ -78,51 +69,55 @@ export class Resource {
       this.links,
       {
         ...this.resources,
-        [key]: embeddedResource
+        [key]: embeddedResource,
       },
-      this.properties
+      this.properties,
     )
   }
 
   /* eslint-disable  @typescript-eslint/no-explicit-any */
   toJson(): object {
     const json: Record<string, any> = {
-      ...this.properties
+      ...this.properties,
     }
-    if (!isEmpty(this.links))
-      json["_links"] = this.links
+    if (!isEmpty(this.links)) json['_links'] = this.links
 
     if (!isEmpty(this.resources))
-      json["_embedded"] = mapObjIndexed(
-        resource => Array.isArray(resource)
-          ? resource.map(r => r.toJson())
-          : resource.toJson(),
-        this.resources)
+      json['_embedded'] = mapObjIndexed(
+        (resource) =>
+          Array.isArray(resource)
+            ? resource.map((r) => r.toJson())
+            : resource.toJson(),
+        this.resources,
+      )
 
     return json
   }
 
   /* eslint-enable  @typescript-eslint/no-explicit-any */
 
-  static fromJson({_links, _embedded, ...properties}: JsonResource): Resource {
+  static fromJson({
+    _links,
+    _embedded,
+    ...properties
+  }: JsonResource): Resource {
     return new Resource(
       _links ?? {},
       mapObjIndexed(
-        resource => Array.isArray(resource)
-          ? resource.map(r => Resource.fromJson(r))
-          : Resource.fromJson(resource),
-        _embedded ?? {}),
-      properties)
+        (resource) =>
+          Array.isArray(resource)
+            ? resource.map((r) => Resource.fromJson(r))
+            : Resource.fromJson(resource),
+        _embedded ?? {},
+      ),
+      properties,
+    )
   }
 }
 
 type EmbeddedJsonResources = JsonResource | JsonResource[]
 type JsonResource = {
-  _links?: Record<string, Link>,
+  _links?: Record<string, Link>
   _embedded?: Record<string, EmbeddedJsonResources>
   [k: string]: Property
 }
-
-
-
-
