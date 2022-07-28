@@ -17,6 +17,6 @@ export const createApp = async (configuration: Configuration) => {
 
   return {
     app,
-    shutDown: async () => await database.end(),
+    shutDown: async () => await database.end()
   }
 }

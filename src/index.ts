@@ -7,7 +7,7 @@ const port = configuration.service.port
 const { app, shutDown } = await createApp(configuration)
 
 const server = app.listen(port, () =>
-  console.log(`App started on port ${port}`),
+  console.log(`App started on port ${port}`)
 )
 
 process.on('SIGTERM', () => {

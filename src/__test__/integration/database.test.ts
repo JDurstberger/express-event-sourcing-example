@@ -19,7 +19,7 @@ const createTestEvent = () => ({
   payload: {},
   type: 'foo-created',
   streamType: 'foo',
-  streamId: randomUUID(),
+  streamId: randomUUID()
 })
 
 describe('Database', () => {
@@ -34,10 +34,10 @@ describe('Database', () => {
     const event = events[0]
     expect(event.id).toStrictEqual(expectedEvent.id)
     expect(event.observedAt.toISOString()).toStrictEqual(
-      expectedEvent.observedAt.toISOString(),
+      expectedEvent.observedAt.toISOString()
     )
     expect(event.occurredAt.toISOString()).toStrictEqual(
-      expectedEvent.occurredAt.toISOString(),
+      expectedEvent.occurredAt.toISOString()
     )
     expect(event.payload).toStrictEqual(expectedEvent.payload)
     expect(event.type).toStrictEqual(expectedEvent.type)

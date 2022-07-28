@@ -5,7 +5,7 @@ import pg, {
   PoolClient,
   QueryConfig,
   QueryResult,
-  QueryResultRow,
+  QueryResultRow
 } from 'pg'
 
 const runMigrations = async (config: DatabaseConfiguration) => {
@@ -16,7 +16,7 @@ const runMigrations = async (config: DatabaseConfiguration) => {
     host: config.host,
     port: config.port,
     ensureDatabaseExists: true,
-    defaultDatabase: 'postgres',
+    defaultDatabase: 'postgres'
   }
 
   await migrate(dbConfig, './src/shared/database/migrations')
@@ -30,7 +30,7 @@ export class Database {
   private constructor(
     configuration: DatabaseConfiguration,
     pool?: Pool,
-    client?: PoolClient,
+    client?: PoolClient
   ) {
     this.configuration = configuration
     this.pool =
@@ -40,14 +40,14 @@ export class Database {
         host: configuration.host,
         database: configuration.name,
         password: configuration.password,
-        port: configuration.port,
+        port: configuration.port
       })
     this.client = client
   }
 
   query<R extends QueryResultRow = any, I extends any[] = any[]>(
     queryTextOrConfig: string | QueryConfig<I>,
-    values?: I,
+    values?: I
   ): Promise<QueryResult<R>> {
     if (this.client) return this.client.query(queryTextOrConfig, values)
 
@@ -55,7 +55,7 @@ export class Database {
   }
 
   async withTransaction(
-    fn: (database: Database) => Promise<any>,
+    fn: (database: Database) => Promise<any>
   ): Promise<any> {
     const client = await this.pool.connect()
     try {
@@ -63,7 +63,7 @@ export class Database {
       const databaseWithClient = new Database(
         this.configuration,
         this.pool,
-        client,
+        client
       )
       await fn(databaseWithClient)
       await client.query('COMMIT')

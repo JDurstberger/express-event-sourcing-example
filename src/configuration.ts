@@ -36,14 +36,14 @@ const getEnvInt = (key: string): number => {
 export const loadConfiguration = (): Configuration => {
   return {
     service: {
-      port: getEnvInt('EESE_SERVICE_SERVICE_PORT'),
+      port: getEnvInt('EESE_SERVICE_SERVICE_PORT')
     },
     database: {
       host: getEnvString('EESE_SERVICE_DATABASE_HOST'),
       port: getEnvInt('EESE_SERVICE_DATABASE_PORT'),
       name: getEnvString('EESE_SERVICE_DATABASE_NAME'),
       user: getEnvString('EESE_SERVICE_DATABASE_USER'),
-      password: getEnvString('EESE_SERVICE_DATABASE_PASSWORD'),
-    },
+      password: getEnvString('EESE_SERVICE_DATABASE_PASSWORD')
+    }
   }
 }

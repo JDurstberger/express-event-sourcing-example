@@ -6,18 +6,18 @@ import { Property } from '../../shared/hal/resource'
 const toContainHref: CustomMatcher = (
   received: Resource,
   rel: string,
-  url: string,
+  url: string
 ): CustomMatcherResult => {
   const pass = received.getHref(rel) === url
   if (pass) {
     return {
       message: () => `hal resource contained href`,
-      pass: true,
+      pass: true
     }
   } else {
     return {
       message: () => `Resource did not contain ${rel} with value ${url}`,
-      pass: false,
+      pass: false
     }
   }
 }
@@ -25,26 +25,26 @@ const toContainHref: CustomMatcher = (
 const toContainProperty: CustomMatcher = (
   received: Resource,
   key: string,
-  value: Property,
+  value: Property
 ): CustomMatcherResult => {
   const pass = received.getProperty(key) === value
   if (pass) {
     return {
       message: () => `hal resource contained property`,
-      pass: true,
+      pass: true
     }
   } else {
     return {
       message: () =>
         `Resource did not contain property ${key} with value ${value}`,
-      pass: false,
+      pass: false
     }
   }
 }
 
 export const halMatchers = {
   toContainHref,
-  toContainProperty,
+  toContainProperty
 }
 
 interface HalMatchers<R = unknown> {

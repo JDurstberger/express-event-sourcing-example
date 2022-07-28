@@ -21,7 +21,7 @@ const dbEventToEvent = (event: any): Event => ({
   type: event.type,
   streamId: event.stream_id,
   streamType: event.stream_type,
-  payload: event.payload,
+  payload: event.payload
 })
 
 export const allEvents = async (database: Database): Promise<Event[]> => {
@@ -33,7 +33,7 @@ const allEventsForStreamStatement = 'SELECT * FROM events WHERE stream_id = $1'
 
 export const allEventsForStream = async (
   database: Database,
-  streamId: string,
+  streamId: string
 ): Promise<Event[]> => {
   const result = await database.query(allEventsForStreamStatement, [streamId])
   return result.rows.map(dbEventToEvent)
@@ -50,7 +50,7 @@ export const addEvent = async <T>(database: Database, event: AddEvent<T>) => {
     event.type,
     event.payload,
     event.streamId,
-    event.streamType,
+    event.streamType
   ]
   await database.query(createEventStatement, values)
 }

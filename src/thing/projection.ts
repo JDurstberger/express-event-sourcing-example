@@ -4,7 +4,7 @@ import { Event } from '../events/event'
 import { Thing } from './thing'
 import {
   UpsertProjection,
-  upsertProjection,
+  upsertProjection
 } from '../shared/projections/queries'
 import moment from 'moment'
 
@@ -19,7 +19,7 @@ export const project = async (database: Database, id: string) => {
     updatedAt: now,
     type: 'thing',
     schemaVersion: 1,
-    payload: thing,
+    payload: thing
   }
 
   await upsertProjection(database, projection)
@@ -37,5 +37,5 @@ const reduceThingEvent = (acc: object, event: Event) => {
 const applyCreationEvent = (acc: object, event: Event) => ({
   ...acc,
   id: event.streamId,
-  name: event.payload.name,
+  name: event.payload.name
 })

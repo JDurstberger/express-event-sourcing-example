@@ -56,7 +56,7 @@ describe('Thing', () => {
     const resource = Resource.fromJson(response.body)
     expect(response.statusCode).toBe(200)
     expect(resource.getProperty('id')).toStrictEqual(
-      createdResource.getProperty('id'),
+      createdResource.getProperty('id')
     )
   })
 

@@ -10,17 +10,17 @@ const toBeUuid: CustomMatcher = (received): CustomMatcherResult => {
   if (pass)
     return {
       message: () => `Matched as uuid`,
-      pass: true,
+      pass: true
     }
 
   return {
     message: () => `${received} is not a uuid`,
-    pass: false,
+    pass: false
   }
 }
 
 export const extraMatchers = {
-  toBeUuid,
+  toBeUuid
 }
 
 interface ExtraMatchers<R = unknown> {

@@ -24,11 +24,11 @@ const createThingEvent = (): AddEvent<ThingCreatedPayload> => {
     observedAt: now,
     occurredAt: now,
     payload: {
-      name: 'Frederick', //TODO replace with posted name
+      name: 'Frederick' //TODO replace with posted name
     },
     type: 'thing-created',
     streamType: 'thing',
-    streamId: thingId,
+    streamId: thingId
   }
 }
 
@@ -37,7 +37,7 @@ const thingToResource = (thing: Thing) =>
 
 export const createThingResource = (
   app: Express,
-  dependencies: { database: Database },
+  dependencies: { database: Database }
 ) => {
   const { database } = dependencies
 
@@ -68,7 +68,7 @@ export const createThingResource = (
           .json(
             Resource.create()
               .addProperty('error', 'resource not found')
-              .toJson(),
+              .toJson()
           )
     })
 }

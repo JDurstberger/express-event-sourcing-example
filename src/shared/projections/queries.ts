@@ -13,12 +13,12 @@ export type UpsertProjection = {
 
 const upsertProjectionStatement = fs.readFileSync(
   './src/shared/projections/upsertProjection.sql',
-  'utf8',
+  'utf8'
 )
 
 export const upsertProjection = async (
   database: Database,
-  projection: UpsertProjection,
+  projection: UpsertProjection
 ) => {
   const values = [
     projection.id,
@@ -26,7 +26,7 @@ export const upsertProjection = async (
     projection.updatedAt.toISOString(),
     projection.type,
     projection.schemaVersion,
-    projection.payload,
+    projection.payload
   ]
   await database.query(upsertProjectionStatement, values)
 }

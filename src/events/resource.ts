@@ -12,7 +12,7 @@ const eventToResource = (event: Event) =>
 
 export const createEventsResource = (
   app: Express,
-  dependencies: { database: Database },
+  dependencies: { database: Database }
 ) => {
   const { database } = dependencies
 

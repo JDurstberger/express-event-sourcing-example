@@ -37,7 +37,7 @@ describe('HAL Resource', () => {
       const expectedUri2 = 'https://example2.com'
       const resource = Resource.create().addLinks({
         [linkRel1]: expectedUri1,
-        [linkRel2]: expectedUri2,
+        [linkRel2]: expectedUri2
       })
 
       const uri1 = resource.getHref(linkRel1)
@@ -82,7 +82,7 @@ describe('HAL Resource', () => {
       const expectedEmbeddedResource = Resource.create()
       const resource = Resource.create().addResource(
         key,
-        expectedEmbeddedResource,
+        expectedEmbeddedResource
       )
 
       const embeddedResource = resource.getResource('key')
@@ -95,7 +95,7 @@ describe('HAL Resource', () => {
       const expectedEmbeddedResources = [Resource.create(), Resource.create()]
       const resource = Resource.create().addResource(
         key,
-        expectedEmbeddedResources,
+        expectedEmbeddedResources
       )
 
       const embeddedResource = resource.getResource('key')
@@ -122,8 +122,8 @@ describe('HAL Resource', () => {
 
       expect(json).toStrictEqual({
         _links: {
-          self: { href: uri },
-        },
+          self: { href: uri }
+        }
       })
     })
 
@@ -135,7 +135,7 @@ describe('HAL Resource', () => {
       const json = resource.toJson()
 
       expect(json).toStrictEqual({
-        [propertyKey]: propertyValue,
+        [propertyKey]: propertyValue
       })
     })
 
@@ -144,15 +144,15 @@ describe('HAL Resource', () => {
       const embeddedResource = Resource.create()
       const resource = Resource.create().addResource(
         embeddedResourceKey,
-        embeddedResource,
+        embeddedResource
       )
 
       const json = resource.toJson()
 
       expect(json).toStrictEqual({
         _embedded: {
-          [embeddedResourceKey]: {},
-        },
+          [embeddedResourceKey]: {}
+        }
       })
     })
 
@@ -161,15 +161,15 @@ describe('HAL Resource', () => {
       const embeddedResources = [Resource.create(), Resource.create()]
       const resource = Resource.create().addResource(
         embeddedResourceKey,
-        embeddedResources,
+        embeddedResources
       )
 
       const json = resource.toJson()
 
       expect(json).toStrictEqual({
         _embedded: {
-          [embeddedResourceKey]: [{}, {}],
-        },
+          [embeddedResourceKey]: [{}, {}]
+        }
       })
     })
   })
@@ -186,7 +186,7 @@ describe('HAL Resource', () => {
 
     it('creates resource with link from JSON', () => {
       const originalHalJson = {
-        _links: { self: { href: 'https://example.com' } },
+        _links: { self: { href: 'https://example.com' } }
       }
 
       const resource = Resource.fromJson(originalHalJson)
@@ -197,7 +197,7 @@ describe('HAL Resource', () => {
 
     it('creates resource with property from JSON', () => {
       const originalHalJson = {
-        prop: 'value',
+        prop: 'value'
       }
 
       const resource = Resource.fromJson(originalHalJson)
@@ -210,9 +210,9 @@ describe('HAL Resource', () => {
       const originalHalJson = {
         _embedded: {
           something: {
-            prop: 123,
-          },
-        },
+            prop: 123
+          }
+        }
       }
 
       const resource = Resource.fromJson(originalHalJson)

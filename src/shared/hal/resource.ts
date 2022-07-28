@@ -31,17 +31,17 @@ export class Resource {
     return new Resource(
       {
         ...this.links,
-        [rel]: { href: uri },
+        [rel]: { href: uri }
       },
       this.resources,
-      this.properties,
+      this.properties
     )
   }
 
   addLinks(rawLinks: Record<string, string>) {
     return toPairs(rawLinks).reduce(
       (resource: Resource, [rel, uri]) => resource.addLink(rel, uri),
-      this,
+      this
     )
   }
 
@@ -56,7 +56,7 @@ export class Resource {
   addProperty(key: string, value: Property) {
     return new Resource(this.links, this.resources, {
       ...this.properties,
-      [key]: value,
+      [key]: value
     })
   }
 
@@ -69,15 +69,15 @@ export class Resource {
       this.links,
       {
         ...this.resources,
-        [key]: embeddedResource,
+        [key]: embeddedResource
       },
-      this.properties,
+      this.properties
     )
   }
 
   toJson(): object {
     const json: Record<string, any> = {
-      ...this.properties,
+      ...this.properties
     }
     if (!isEmpty(this.links)) json['_links'] = this.links
 
@@ -87,7 +87,7 @@ export class Resource {
           Array.isArray(resource)
             ? resource.map((r) => r.toJson())
             : resource.toJson(),
-        this.resources,
+        this.resources
       )
 
     return json
@@ -105,9 +105,9 @@ export class Resource {
           Array.isArray(resource)
             ? resource.map((r) => Resource.fromJson(r))
             : Resource.fromJson(resource),
-        _embedded ?? {},
+        _embedded ?? {}
       ),
-      properties,
+      properties
     )
   }
 }
