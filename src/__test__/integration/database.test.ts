@@ -7,9 +7,15 @@ import moment from 'moment'
 import { allEvents } from '../../events/queries'
 
 const configuration = loadConfiguration()
+let database: Database
 
 beforeEach(async () => {
   await clearDatabase(configuration.database)
+  database = await Database.create(configuration.database)
+})
+
+afterEach(async () => {
+  await database.end()
 })
 
 const createTestEvent = () => ({
@@ -24,7 +30,6 @@ const createTestEvent = () => ({
 
 describe('Database', () => {
   test('adds event', async () => {
-    const database = await Database.create(configuration.database)
     const expectedEvent = createTestEvent()
 
     await addEvent(database, expectedEvent)
@@ -47,7 +52,6 @@ describe('Database', () => {
 
   describe('transaction', () => {
     test('adds two events in transaction', async () => {
-      const database = await Database.create(configuration.database)
       const event1 = createTestEvent()
       const event2 = createTestEvent()
 
@@ -61,7 +65,6 @@ describe('Database', () => {
     })
 
     test('adds no events when exception occurs in transaction', async () => {
-      const database = await Database.create(configuration.database)
       const event = createTestEvent()
       try {
         await database.withTransaction(async (database) => {
@@ -77,7 +80,6 @@ describe('Database', () => {
     })
 
     test('rethrows when exception occurs in transaction', async () => {
-      const database = await Database.create(configuration.database)
       let exception
       try {
         await database.withTransaction(async () => {
