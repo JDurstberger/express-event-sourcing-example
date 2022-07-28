@@ -16,7 +16,33 @@ const toContainHref: CustomMatcher = (
     }
   } else {
     return {
-      message: () => `Resource did not contain ${rel} with value ${url}`,
+      message: () =>
+        `Resource ${JSON.stringify(
+          received.toJson()
+        )} did not contain ${rel} with value ${url}`,
+      pass: false
+    }
+  }
+}
+
+const toContainHrefMatching: CustomMatcher = (
+  received: Resource,
+  rel: string,
+  regex: RegExp
+): CustomMatcherResult => {
+  const href = received.getHref(rel)
+  const pass = href !== undefined ? regex.test(href) : false
+  if (pass) {
+    return {
+      message: () => `hal resource contained href`,
+      pass: true
+    }
+  } else {
+    return {
+      message: () =>
+        `Resource ${JSON.stringify(
+          received.toJson()
+        )} did not contain ${rel} matching ${regex}`,
       pass: false
     }
   }
@@ -44,11 +70,14 @@ const toContainProperty: CustomMatcher = (
 
 export const halMatchers = {
   toContainHref,
-  toContainProperty
+  toContainProperty,
+  toContainHrefMatching
 }
 
 interface HalMatchers<R = unknown> {
   toContainHref(rel: string, url: string): R
+
+  toContainHrefMatching(rel: string, regex: RegExp): R
 
   toContainProperty(key: string, value: Property): R
 }

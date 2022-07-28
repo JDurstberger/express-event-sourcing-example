@@ -4,13 +4,11 @@ import { Database } from '../shared/database'
 import { findThingById } from './queries'
 import { Thing } from './thing'
 import { createThing } from './commands'
-
-const buildSelf = ({ protocol, headers, url }: Request, id: string) =>
-  `${protocol}://${headers['host']}${url}/${id}`
+import { linkFor, Route } from '../links'
 
 const thingToResource = (request: Request, thing: Thing) =>
   Resource.create()
-    .addLink('self', buildSelf(request, thing.id))
+    .addLink('self', linkFor(request, Route.Thing, { thingId: thing.id }))
     .addProperty('id', thing.id)
 
 export const createThingRoutes = (

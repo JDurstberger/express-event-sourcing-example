@@ -28,6 +28,12 @@ To find all available tasks `go -T`
 * Postgresql as the DB
 * Rake as the build system
 * HAL/JSON as the data transfer protocol
+ 
+
+## Known constraints
+
+* No pagination or offsetting on events endpoint
+* URL templating is very lacking
 
 ## Known issues
 
