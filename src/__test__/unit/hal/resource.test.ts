@@ -2,7 +2,7 @@ import { Resource } from '../../../shared/hal'
 
 describe('HAL Resource', () => {
   describe('links', () => {
-    it('link does not exist by default', () => {
+    test('link does not exist by default', () => {
       const resource = Resource.create()
 
       const uri = resource.getHref('key')
@@ -10,7 +10,7 @@ describe('HAL Resource', () => {
       expect(uri).toBeUndefined()
     })
 
-    it('adds link to resource', () => {
+    test('adds link to resource', () => {
       const linkRel = 'self'
       const expectedUri = 'https://example.com'
       const resource = Resource.create().addLink(linkRel, expectedUri)
@@ -20,7 +20,7 @@ describe('HAL Resource', () => {
       expect(uri).toStrictEqual(expectedUri)
     })
 
-    it('returns new resource when adding link to resource', () => {
+    test('returns new resource when adding link to resource', () => {
       const linkRel = 'self'
       const uri = 'https://example.com'
       const resource = Resource.create()
@@ -30,7 +30,7 @@ describe('HAL Resource', () => {
       expect(resourceWithLink).not.toBe(resource)
     })
 
-    it('adds multiple links to resource', () => {
+    test('adds multiple links to resource', () => {
       const linkRel1 = 'rel1'
       const expectedUri1 = 'https://example1.com'
       const linkRel2 = 'rel2'
@@ -49,7 +49,7 @@ describe('HAL Resource', () => {
   })
 
   describe('properties', () => {
-    it('property does not exist by default', () => {
+    test('property does not exist by default', () => {
       const resource = Resource.create()
 
       const property = resource.getProperty('key')
@@ -57,7 +57,7 @@ describe('HAL Resource', () => {
       expect(property).toBeUndefined()
     })
 
-    it('adds property to resource', () => {
+    test('adds property to resource', () => {
       const key = 'x'
       const expectedProperty = 'a'
       const resource = Resource.create().addProperty(key, expectedProperty)
@@ -69,7 +69,7 @@ describe('HAL Resource', () => {
   })
 
   describe('embedded resources', () => {
-    it('embedded resource does not exist by default', () => {
+    test('embedded resource does not exist by default', () => {
       const resource = Resource.create()
 
       const embeddedResource = resource.getResource('key')
@@ -77,7 +77,7 @@ describe('HAL Resource', () => {
       expect(embeddedResource).toBeUndefined()
     })
 
-    it('adds embedded resource to resource', () => {
+    test('adds embedded resource to resource', () => {
       const key = 'key'
       const expectedEmbeddedResource = Resource.create()
       const resource = Resource.create().addResource(
@@ -90,7 +90,7 @@ describe('HAL Resource', () => {
       expect(embeddedResource).toStrictEqual(expectedEmbeddedResource)
     })
 
-    it('adds embedded resources to resource', () => {
+    test('adds embedded resources to resource', () => {
       const key = 'key'
       const expectedEmbeddedResources = [Resource.create(), Resource.create()]
       const resource = Resource.create().addResource(
@@ -105,7 +105,7 @@ describe('HAL Resource', () => {
   })
 
   describe('to JSON', () => {
-    it('creates empty resource', () => {
+    test('creates empty resource', () => {
       const resource = Resource.create()
 
       const json = resource.toJson()
@@ -113,7 +113,7 @@ describe('HAL Resource', () => {
       expect(json).toStrictEqual({})
     })
 
-    it('creates JSON with _link', () => {
+    test('creates JSON with _link', () => {
       const linkRel = 'self'
       const uri = 'https://example.com'
       const resource = Resource.create().addLink(linkRel, uri)
@@ -127,7 +127,7 @@ describe('HAL Resource', () => {
       })
     })
 
-    it('creates JSON with property', () => {
+    test('creates JSON with property', () => {
       const propertyKey = 'key'
       const propertyValue = 'value'
       const resource = Resource.create().addProperty(propertyKey, propertyValue)
@@ -139,7 +139,7 @@ describe('HAL Resource', () => {
       })
     })
 
-    it('creates JSON with embedded resource', () => {
+    test('creates JSON with embedded resource', () => {
       const embeddedResourceKey = 'key'
       const embeddedResource = Resource.create()
       const resource = Resource.create().addResource(
@@ -156,7 +156,7 @@ describe('HAL Resource', () => {
       })
     })
 
-    it('creates JSON with embedded resource array', () => {
+    test('creates JSON with embedded resource array', () => {
       const embeddedResourceKey = 'key'
       const embeddedResources = [Resource.create(), Resource.create()]
       const resource = Resource.create().addResource(
@@ -175,7 +175,7 @@ describe('HAL Resource', () => {
   })
 
   describe('from JSON', () => {
-    it('creates empty resource from JSON', () => {
+    test('creates empty resource from JSON', () => {
       const originalHalJson = {}
 
       const resource = Resource.fromJson(originalHalJson)
@@ -184,7 +184,7 @@ describe('HAL Resource', () => {
       expect(newHalJson).toStrictEqual(originalHalJson)
     })
 
-    it('creates resource with link from JSON', () => {
+    test('creates resource with link from JSON', () => {
       const originalHalJson = {
         _links: { self: { href: 'https://example.com' } }
       }
@@ -195,7 +195,7 @@ describe('HAL Resource', () => {
       expect(newHalJson).toStrictEqual(originalHalJson)
     })
 
-    it('creates resource with property from JSON', () => {
+    test('creates resource with property from JSON', () => {
       const originalHalJson = {
         prop: 'value'
       }
@@ -206,7 +206,7 @@ describe('HAL Resource', () => {
       expect(newHalJson).toStrictEqual(originalHalJson)
     })
 
-    it('creates resource with embedded resource from JSON', () => {
+    test('creates resource with embedded resource from JSON', () => {
       const originalHalJson = {
         _embedded: {
           something: {

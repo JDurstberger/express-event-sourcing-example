@@ -17,7 +17,7 @@ afterEach(async () => {
 })
 
 describe('Discovery', () => {
-  it('returns self link', async () => {
+  test('returns self link', async () => {
     const request = supertest(system.app).get('/')
 
     const response = await request
@@ -27,7 +27,7 @@ describe('Discovery', () => {
     expect(resource).toContainHref('self', request.url)
   })
 
-  it('returns events link', async () => {
+  test('returns events link', async () => {
     const request = supertest(system.app).get('/')
 
     const response = await request
@@ -37,7 +37,7 @@ describe('Discovery', () => {
     expect(resource).toContainHrefMatching('events', /\/events/)
   })
 
-  it('returns things link', async () => {
+  test('returns things link', async () => {
     const request = supertest(system.app).get('/')
 
     const response = await request
@@ -47,7 +47,7 @@ describe('Discovery', () => {
     expect(resource).toContainHrefMatching('things', /\/things/)
   })
 
-  it('returns thing link', async () => {
+  test('returns thing link', async () => {
     const request = supertest(system.app).get('/')
 
     const response = await request

@@ -22,7 +22,7 @@ afterEach(async () => {
 })
 
 describe('Events', () => {
-  it('return empty response by default', async () => {
+  test('return empty response by default', async () => {
     const app = supertest(system.app)
     const request = app.get('/events')
 
