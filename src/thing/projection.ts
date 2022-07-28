@@ -1,6 +1,6 @@
 import { Database } from '../shared/database'
 import { allEventsForStream } from '../events/queries'
-import { Event } from '../events/event'
+import { Event } from '../events'
 import { Thing } from './thing'
 import {
   UpsertProjection,

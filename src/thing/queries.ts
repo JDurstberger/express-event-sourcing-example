@@ -1,7 +1,6 @@
 import { Database } from '../shared/database'
 import { Thing } from './thing'
-
-const thingByIdStatement = 'SELECT * FROM projections where id = $1'
+import { thingByIdStatement } from './sql'
 
 const dbThingToThing = (thing: any): Thing => {
   return {
@@ -10,11 +9,21 @@ const dbThingToThing = (thing: any): Thing => {
   }
 }
 
-export const getThingById = async (
+export const findThingById = async (
   database: Database,
   id: string
 ): Promise<Thing | null> => {
   const result = await database.query(thingByIdStatement, [id])
   const dbThing = result.rows[0]
   return dbThing ? dbThingToThing(dbThing) : null
+}
+
+export const getThingById = async (
+  database: Database,
+  id: string
+): Promise<Thing> => {
+  const thing = await findThingById(database, id)
+  if (thing === null) throw Error(`Unable to get thing with id ${id}`)
+
+  return thing
 }

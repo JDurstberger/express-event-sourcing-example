@@ -1,39 +1,17 @@
 import { Express, Request, Response } from 'express'
 import { Resource } from '../shared/hal'
-import { v4 as uuid } from 'uuid'
-import { addEvent, AddEvent } from '../events'
-import moment from 'moment'
 import { Database } from '../shared/database'
-import { getThingById } from './queries'
+import { findThingById } from './queries'
 import { Thing } from './thing'
-import { project } from './projection'
+import { createThing } from './commands'
 
 const buildSelf = ({ protocol, headers, url }: Request, id: string) =>
   `${protocol}://${headers['host']}${url}/${id}`
 
-type ThingCreatedPayload = {
-  name: string
-}
-
-const createThingEvent = (): AddEvent<ThingCreatedPayload> => {
-  const eventId = uuid()
-  const thingId = uuid()
-  const now = moment.utc()
-  return {
-    id: eventId,
-    observedAt: now,
-    occurredAt: now,
-    payload: {
-      name: 'Frederick' //TODO replace with posted name
-    },
-    type: 'thing-created',
-    streamType: 'thing',
-    streamId: thingId
-  }
-}
-
-const thingToResource = (thing: Thing) =>
-  Resource.create().addProperty('id', thing.id)
+const thingToResource = (request: Request, thing: Thing) =>
+  Resource.create()
+    .addLink('self', buildSelf(request, thing.id))
+    .addProperty('id', thing.id)
 
 export const createThingResource = (
   app: Express,
@@ -42,26 +20,19 @@ export const createThingResource = (
   const { database } = dependencies
 
   app.route('/things').post(async (request: Request, response: Response) => {
-    const event = createThingEvent()
+    const thing = await createThing(dependencies)
 
-    await database.withTransaction(async (database) => {
-      await addEvent(database, event)
-      await project(database, event.streamId)
-    })
-
-    const resource = Resource.create()
-      .addProperty('id', event.streamId)
-      .addLink('self', buildSelf(request, event.streamId))
-
-    return response.status(201).json(resource.toJson())
+    return response.status(201).json(thingToResource(request, thing).toJson())
   })
 
   app
     .route('/things/:thingId')
     .get(async (request: Request, response: Response) => {
-      const thing = await getThingById(database, request.params.thingId)
+      const thing = await findThingById(database, request.params.thingId)
       if (thing)
-        return response.status(200).json(thingToResource(thing).toJson())
+        return response
+          .status(200)
+          .json(thingToResource(request, thing).toJson())
       else
         return response
           .status(404)

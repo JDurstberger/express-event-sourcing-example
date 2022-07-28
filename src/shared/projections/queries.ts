@@ -1,6 +1,6 @@
 import { Database } from '../database'
-import * as fs from 'fs'
 import { Moment } from 'moment'
+import { upsertProjectionStatement } from './sql'
 
 export type UpsertProjection = {
   id: string
@@ -10,11 +10,6 @@ export type UpsertProjection = {
   schemaVersion: number
   payload: object
 }
-
-const upsertProjectionStatement = fs.readFileSync(
-  './src/shared/projections/upsertProjection.sql',
-  'utf8'
-)
 
 export const upsertProjection = async (
   database: Database,

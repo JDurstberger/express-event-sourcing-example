@@ -59,9 +59,7 @@ export class Database {
     return this.pool.query(queryTextOrConfig, values)
   }
 
-  async withTransaction(
-    fn: (database: Database) => Promise<any>
-  ): Promise<any> {
+  async withTransaction<T>(fn: (database: Database) => Promise<T>): Promise<T> {
     const client = await this.pool.connect()
     try {
       await client.query('BEGIN')
@@ -70,8 +68,9 @@ export class Database {
         this.pool,
         client
       )
-      await fn(databaseWithClient)
+      const result = await fn(databaseWithClient)
       await client.query('COMMIT')
+      return result
     } catch (e) {
       await client.query('ROLLBACK')
       throw e

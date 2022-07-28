@@ -1,6 +1,11 @@
 import { Database } from '../shared/database'
 import { Event } from './event'
 import moment, { Moment } from 'moment'
+import {
+  allEventsForStreamStatement,
+  allEventsStatement,
+  insertEventStatement
+} from './sql'
 
 export type AddEvent<T> = {
   id: string
@@ -11,8 +16,6 @@ export type AddEvent<T> = {
   streamType: string
   payload: T
 }
-
-const allEventsStatement = 'SELECT * FROM events'
 
 const dbEventToEvent = (event: any): Event => ({
   id: event.id,
@@ -29,8 +32,6 @@ export const allEvents = async (database: Database): Promise<Event[]> => {
   return result.rows.map(dbEventToEvent)
 }
 
-const allEventsForStreamStatement = 'SELECT * FROM events WHERE stream_id = $1'
-
 export const allEventsForStream = async (
   database: Database,
   streamId: string
@@ -38,9 +39,6 @@ export const allEventsForStream = async (
   const result = await database.query(allEventsForStreamStatement, [streamId])
   return result.rows.map(dbEventToEvent)
 }
-
-const createEventStatement =
-  'INSERT INTO events(id, observed_at, occurred_at, type, payload, stream_id, stream_type) VALUES($1, $2, $3, $4, $5, $6, $7)'
 
 export const addEvent = async <T>(database: Database, event: AddEvent<T>) => {
   const values = [
@@ -52,5 +50,5 @@ export const addEvent = async <T>(database: Database, event: AddEvent<T>) => {
     event.streamId,
     event.streamType
   ]
-  await database.query(createEventStatement, values)
+  await database.query(insertEventStatement, values)
 }
