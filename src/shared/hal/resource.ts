@@ -17,14 +17,32 @@ export class Resource {
   readonly properties: Properties
   readonly resources: Resources
 
-  static create() {
-    return new Resource({}, {}, {})
-  }
-
   constructor(links: Links, resources: Resources, properties: Properties) {
     this.links = links
     this.resources = resources
     this.properties = properties
+  }
+
+  static create() {
+    return new Resource({}, {}, {})
+  }
+
+  static fromJson({
+    _links,
+    _embedded,
+    ...properties
+  }: JsonResource): Resource {
+    return new Resource(
+      _links ?? {},
+      mapObjIndexed(
+        (resource) =>
+          Array.isArray(resource)
+            ? resource.map((r) => Resource.fromJson(r))
+            : Resource.fromJson(resource),
+        _embedded ?? {}
+      ),
+      properties
+    )
   }
 
   addLink(rel: string, uri: string): Resource {
@@ -91,24 +109,6 @@ export class Resource {
       )
 
     return json
-  }
-
-  static fromJson({
-    _links,
-    _embedded,
-    ...properties
-  }: JsonResource): Resource {
-    return new Resource(
-      _links ?? {},
-      mapObjIndexed(
-        (resource) =>
-          Array.isArray(resource)
-            ? resource.map((r) => Resource.fromJson(r))
-            : Resource.fromJson(resource),
-        _embedded ?? {}
-      ),
-      properties
-    )
   }
 }
 

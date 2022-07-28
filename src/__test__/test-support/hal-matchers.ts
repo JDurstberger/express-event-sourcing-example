@@ -49,6 +49,7 @@ export const halMatchers = {
 
 interface HalMatchers<R = unknown> {
   toContainHref(rel: string, url: string): R
+
   toContainProperty(key: string, value: Property): R
 }
 

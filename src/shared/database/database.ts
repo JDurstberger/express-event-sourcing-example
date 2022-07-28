@@ -23,9 +23,9 @@ const runMigrations = async (config: DatabaseConfiguration) => {
 }
 
 export class Database {
+  private readonly client?: PoolClient
   private readonly configuration: DatabaseConfiguration
   private readonly pool: Pool
-  readonly client?: PoolClient
 
   private constructor(
     configuration: DatabaseConfiguration,
@@ -43,6 +43,11 @@ export class Database {
         port: configuration.port
       })
     this.client = client
+  }
+
+  static create = async (config: DatabaseConfiguration): Promise<Database> => {
+    await runMigrations(config)
+    return new Database(config)
   }
 
   query<R extends QueryResultRow = any, I extends any[] = any[]>(
@@ -77,10 +82,5 @@ export class Database {
 
   end(): Promise<void> {
     return this.pool.end()
-  }
-
-  static create = async (config: DatabaseConfiguration): Promise<Database> => {
-    await runMigrations(config)
-    return new Database(config)
   }
 }
