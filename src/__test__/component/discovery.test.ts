@@ -1,15 +1,24 @@
 import { halMatchers } from '../test-support/hal-matchers'
-import { createApp } from '../../app'
+import { createSystem, System } from '../../system'
 import { loadConfiguration } from '../../configuration'
 import supertest from 'supertest'
 import { Resource } from '../../shared/hal'
 
 expect.extend(halMatchers)
 
+let system: System
+
+beforeEach(async () => {
+  system = await createSystem(loadConfiguration())
+})
+
+afterEach(async () => {
+  await system.shutdown()
+})
+
 describe('Discovery', () => {
   it('returns self link', async () => {
-    const { app } = await createApp(loadConfiguration())
-    const request = supertest(app).get('/')
+    const request = supertest(system.app).get('/')
 
     const response = await request
 

@@ -1,1 +1,1 @@
-export { createThingResource } from './resource'
+export { createThingRoutes } from './routes'

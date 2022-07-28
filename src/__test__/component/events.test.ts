@@ -1,23 +1,30 @@
 import { halMatchers } from '../test-support/hal-matchers'
-import { createApp } from '../../app'
+import { createSystem } from '../../system'
 import { loadConfiguration } from '../../configuration'
 import { Resource } from '../../shared/hal'
 import supertest from 'supertest'
 import { clearDatabase } from '../test-support/database'
+import { System } from '../../system'
 
 expect.extend(halMatchers)
 
 const configuration = loadConfiguration()
 
+let system: System
+
 beforeEach(async () => {
   await clearDatabase(configuration.database)
+  system = await createSystem(configuration)
+})
+
+afterEach(async () => {
+  await system.shutdown()
 })
 
 describe('Events', () => {
   it('return empty response by default', async () => {
-    const { app } = await createApp(configuration)
-    const system = supertest(app)
-    const request = system.get('/events')
+    const app = supertest(system.app)
+    const request = app.get('/events')
 
     const response = await request
 

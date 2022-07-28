@@ -40,8 +40,3 @@ the app is already trying to connect.
 
 Currently, only happens when the docker container does not exist yet.
 Just run the start command again
-
-### Component tests are complaining that async operation was not stopped
-
-This is probably because the db pool is not ended when the test run was finished. 
-Needs investigation.

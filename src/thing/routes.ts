@@ -13,7 +13,7 @@ const thingToResource = (request: Request, thing: Thing) =>
     .addLink('self', buildSelf(request, thing.id))
     .addProperty('id', thing.id)
 
-export const createThingResource = (
+export const createThingRoutes = (
   app: Express,
   dependencies: { database: Database }
 ) => {

@@ -10,7 +10,7 @@ const buildSelf = ({ protocol, headers, url }: Request) =>
 const eventToResource = (event: Event) =>
   Resource.create().addProperty('id', event.id)
 
-export const createEventsResource = (
+export const createEventsRoutes = (
   app: Express,
   dependencies: { database: Database }
 ) => {
