@@ -1,10 +1,10 @@
 import { DatabaseConfiguration } from '../../configuration'
-import { createDatabase } from '../../shared/database'
+import { Database } from '../../shared/database'
 
 const clearDatabaseStatement = 'TRUNCATE events CASCADE;'
 
 export const clearDatabase = async (configuration: DatabaseConfiguration) => {
-  const database = await createDatabase(configuration)
-  await database.pool.query(clearDatabaseStatement)
-  await database.pool.end()
+  const database = await Database.create(configuration)
+  await database.query(clearDatabaseStatement)
+  await database.end()
 }

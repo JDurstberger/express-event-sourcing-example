@@ -75,7 +75,6 @@ export class Resource {
     )
   }
 
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
   toJson(): object {
     const json: Record<string, any> = {
       ...this.properties,
@@ -93,8 +92,6 @@ export class Resource {
 
     return json
   }
-
-  /* eslint-enable  @typescript-eslint/no-explicit-any */
 
   static fromJson({
     _links,

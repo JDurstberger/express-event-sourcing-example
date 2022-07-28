@@ -1,6 +1,7 @@
 import CustomMatcher = jest.CustomMatcher
 import CustomMatcherResult = jest.CustomMatcherResult
 import { Resource } from '../../shared/hal'
+import { Property } from '../../shared/hal/resource'
 
 const toContainHref: CustomMatcher = (
   received: Resource,
@@ -21,12 +22,34 @@ const toContainHref: CustomMatcher = (
   }
 }
 
+const toContainProperty: CustomMatcher = (
+  received: Resource,
+  key: string,
+  value: Property,
+): CustomMatcherResult => {
+  const pass = received.getProperty(key) === value
+  if (pass) {
+    return {
+      message: () => `hal resource contained property`,
+      pass: true,
+    }
+  } else {
+    return {
+      message: () =>
+        `Resource did not contain property ${key} with value ${value}`,
+      pass: false,
+    }
+  }
+}
+
 export const halMatchers = {
   toContainHref,
+  toContainProperty,
 }
 
 interface HalMatchers<R = unknown> {
   toContainHref(rel: string, url: string): R
+  toContainProperty(key: string, value: Property): R
 }
 
 /* eslint-disable @typescript-eslint/no-namespace, @typescript-eslint/no-empty-interface */

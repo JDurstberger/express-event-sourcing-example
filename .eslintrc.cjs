@@ -10,4 +10,8 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:jest/recommended',
     ],
+    rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off"
+    },
 };

@@ -112,6 +112,18 @@ namespace :test do
     sh('yarn test-unit')
   end
 
+  task :integration => [:'app:dependencies:install', :'database:test:provision'] do
+    environment = configuration
+                    .for_scope(
+                      role: 'test',
+                      deployment_type: 'local',
+                      deployment_label: 'testing'
+                    ).environment
+                    .to_h
+    write_env_file(environment)
+    sh('yarn test-integration')
+  end
+
   task :component => [:'app:dependencies:install', :'database:test:provision'] do
     environment = configuration
                     .for_scope(
@@ -126,6 +138,7 @@ namespace :test do
 
   task :all do
     Rake::Task['test:unit'].invoke
+    Rake::Task['test:integration'].invoke
     Rake::Task['test:component'].invoke
   end
 end

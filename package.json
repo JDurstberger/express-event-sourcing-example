@@ -11,8 +11,9 @@
     "start": "node --es-module-specifier-resolution=node dist/index.js",
     "compile": "yarn tsc",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon --experimental-specifier-resolution=node -q dist/index.js\"",
-    "test-component": "jest --runInBand ./__test__/component",
     "test-unit": "jest ./__test__/unit",
+    "test-integration": "jest --runInBand ./__test__/integration",
+    "test-component": "jest --runInBand ./__test__/component",
     "lint": "eslint --fix --exit-on-fatal-error --max-warnings 0 .",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
