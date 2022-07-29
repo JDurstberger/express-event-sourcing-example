@@ -17,8 +17,9 @@ This repository is supposed to showcase a very simple implementation.
 * **HAL/JSON** as it is imho the best way to represent RESTFUL data
   
 ## Prerequisites
- * rbenv to install the required ruby for Rake - see .ruby-version
- * NVM to install the required node version - see .node-version
+ * **rbenv** to install the required ruby for Rake - see .ruby-version
+ * **NVM** to install the required node version - see .node-version
+ * **docker** to run the database
 
 ## How to Run?
 
