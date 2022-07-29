@@ -11,4 +11,4 @@ PROJECT_DIR="$( cd "$SCRIPT_DIR/../../.." && pwd )"
 
 cd "$PROJECT_DIR"
 
-./go test:all
+./go test:all[ci,testing]

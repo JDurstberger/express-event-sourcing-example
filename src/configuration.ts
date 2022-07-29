@@ -20,7 +20,7 @@ export type Configuration = {
 const getEnvString = (key: string): string => {
   const value = process.env[key]
 
-  if (!value) throw Error(`Unable to load env variable ${key}`)
+  if (value === undefined) throw Error(`Unable to load env variable ${key}`)
 
   return value
 }

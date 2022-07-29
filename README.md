@@ -3,8 +3,8 @@
 This is a very basic event sourcing implementation.
 
 ## Prerequisites
- * Ruby for Rake - see .ruby-version
- * NVM to install the required node version
+ * rbenv to install the required ruby for Rake - see .ruby-version
+ * NVM to install the required node version - see .node-version
 
 ## How to run?
 

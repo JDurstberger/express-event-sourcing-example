@@ -1,0 +1,8 @@
+---
+service_port: 0
+database_deployment_type: "deployed"
+database_host: "localhost"
+database_port: 5432
+database_name: "circle_test"
+database_user: "postgres"
+database_password: ""

@@ -20,7 +20,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await system.shutdown()
+  await system?.shutdown()
 })
 
 describe('Thing', () => {

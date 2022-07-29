@@ -112,34 +112,55 @@ namespace :test do
     sh('yarn test-unit')
   end
 
-  task :integration => [:'app:dependencies:install', :'database:test:provision'] do
+  task :integration, [:deployment_type, :deployment_label] => [:'app:dependencies:install'] do |_, args|
+    puts args
+    args.with_defaults(
+      deployment_type: 'local',
+      deployment_label: 'testing')
+
+    puts args
+
+    configuration = configuration
+                      .for_scope(args.to_h.merge(role: 'test'))
     environment = configuration
-                    .for_scope(
-                      role: 'test',
-                      deployment_type: 'local',
-                      deployment_label: 'testing'
-                    ).environment
+                    .environment
                     .to_h
+
+    if configuration.database_deployment_type == 'local'
+      Rake::Task['database:test:provision'].invoke
+    end
+
     write_env_file(environment)
     sh('yarn test-integration')
   end
 
-  task :component => [:'app:dependencies:install', :'database:test:provision'] do
+  task :component, [:deployment_type, :deployment_label] => [:'app:dependencies:install'] do |_, args|
+    args.with_defaults(
+      deployment_type: 'local',
+      deployment_label: 'testing')
+
+    configuration = configuration
+                      .for_scope(args.to_h.merge(role: 'test'))
     environment = configuration
-                    .for_scope(
-                      role: 'test',
-                      deployment_type: 'local',
-                      deployment_label: 'testing'
-                    ).environment
+                    .environment
                     .to_h
+
+    if configuration.database_deployment_type == 'local'
+      Rake::Task['database:test:provision'].invoke
+    end
+
     write_env_file(environment)
     sh('yarn test-component')
   end
 
-  task :all do
+  task :all, [:deployment_type, :deployment_label] do |_, args|
+    args.with_defaults(
+      deployment_type: 'local',
+      deployment_label: 'testing')
+
     Rake::Task['test:unit'].invoke
-    Rake::Task['test:integration'].invoke
-    Rake::Task['test:component'].invoke
+    Rake::Task['test:integration'].invoke(*args)
+    Rake::Task['test:component'].invoke(*args)
   end
 end
 
