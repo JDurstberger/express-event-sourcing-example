@@ -6,7 +6,13 @@ export type ThingCreatedPayload = {
   name: string
 }
 
-export const createThingCreatedEvent = (): AddEvent<ThingCreatedPayload> => {
+export type CreateThingData = {
+  name: string
+}
+
+export const createThingCreatedEvent = (
+  data: CreateThingData
+): AddEvent<ThingCreatedPayload> => {
   const eventId = randomUUID()
   const thingId = randomUUID()
   const now = moment.utc()
@@ -15,7 +21,7 @@ export const createThingCreatedEvent = (): AddEvent<ThingCreatedPayload> => {
     observedAt: now,
     occurredAt: now,
     payload: {
-      name: 'Frederick' //TODO replace with posted name
+      name: data.name
     },
     type: 'thing-created',
     streamType: 'thing',

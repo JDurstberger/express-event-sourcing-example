@@ -5,11 +5,22 @@ import { findThingById } from './queries'
 import { Thing } from './thing'
 import { createThing } from './commands'
 import { linkFor, Route } from '../links'
+import { validateCreateThing } from './validations'
+import { ValidationError } from 'joi'
+
+const validationErrorToResource = (
+  request: Request,
+  validationError: ValidationError
+) =>
+  Resource.create()
+    .addLink('self', linkFor(request, Route.Things))
+    .addProperty('errorDetails', validationError.details)
 
 const thingToResource = (request: Request, thing: Thing) =>
   Resource.create()
     .addLink('self', linkFor(request, Route.Thing, { thingId: thing.id }))
     .addProperty('id', thing.id)
+    .addProperty('name', thing.name)
 
 export const createThingRoutes = (
   app: Express,
@@ -18,7 +29,17 @@ export const createThingRoutes = (
   const { database } = dependencies
 
   app.route('/things').post(async (request: Request, response: Response) => {
-    const thing = await createThing(dependencies)
+    const validationResult = validateCreateThing(request)
+
+    if (validationResult.error) {
+      return response
+        .status(422)
+        .json(
+          validationErrorToResource(request, validationResult.error).toJson()
+        )
+    }
+
+    const thing = await createThing(dependencies, validationResult.value)
 
     return response.status(201).json(thingToResource(request, thing).toJson())
   })

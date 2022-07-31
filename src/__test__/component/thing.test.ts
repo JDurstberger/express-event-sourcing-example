@@ -1,12 +1,12 @@
 import { halMatchers } from '../test-support/hal-matchers'
-import { createSystem } from '../../system'
+import { createSystem, System } from '../../system'
 import { loadConfiguration } from '../../configuration'
 import { Resource } from '../../shared/hal'
 import { extraMatchers } from '../test-support/extra-matchers'
 import supertest from 'supertest'
 import { clearDatabase } from '../test-support/database'
 import { randomUUID } from 'crypto'
-import { System } from '../../system'
+import { randomCreateThingBody, randomName } from '../test-support/data'
 
 expect.extend(halMatchers)
 expect.extend(extraMatchers)
@@ -26,7 +26,9 @@ afterEach(async () => {
 describe('Thing', () => {
   test('creates thing', async () => {
     const app = supertest(system.app)
-    const request = app.post('/things')
+    const name = randomName()
+    const postBody = randomCreateThingBody({ name })
+    const request = app.post('/things').send(postBody)
 
     const response = await request
 
@@ -35,6 +37,26 @@ describe('Thing', () => {
     expect(response.statusCode).toBe(201)
     expect(id).toBeUuid()
     expect(resource).toContainHref('self', `${request.url}/${id}`)
+    expect(resource.getProperty('name')).toEqual(name)
+  })
+
+  test('does not create thing when properties are missing', async () => {
+    const app = supertest(system.app)
+    const request = app.post('/things').send({})
+
+    const response = await request
+
+    const resource = Resource.fromJson(response.body)
+    expect(response.statusCode).toBe(422)
+    expect(resource).toContainHrefMatching('self', /\/things$/)
+    expect(resource.getProperty('errorDetails')).toStrictEqual([
+      {
+        context: { key: 'name', label: 'name' },
+        message: '"name" is required',
+        path: ['name'],
+        type: 'any.required'
+      }
+    ])
   })
 
   test('non existent thing returns not found', async () => {
@@ -50,7 +72,9 @@ describe('Thing', () => {
 
   test('thing is accessible via id', async () => {
     const app = supertest(system.app)
-    const creationResponse = await app.post('/things')
+    const creationResponse = await app
+      .post('/things')
+      .send(randomCreateThingBody())
     const createdResource = Resource.fromJson(creationResponse.body)
     const path = new URL(createdResource.getHref('self')!).pathname
     const request = app.get(path)
@@ -66,7 +90,7 @@ describe('Thing', () => {
 
   test('creates creation event for thing', async () => {
     const app = supertest(system.app)
-    await app.post('/things')
+    await app.post('/things').send(randomCreateThingBody())
 
     const response = await app.get('/events')
 

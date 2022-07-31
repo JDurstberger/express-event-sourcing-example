@@ -1,5 +1,5 @@
 ---
-service_port: 9100
+service_port: 0
 database_deployment_type: "local"
 database_host: "localhost"
 database_port: 9102

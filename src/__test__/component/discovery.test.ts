@@ -34,7 +34,7 @@ describe('Discovery', () => {
 
     const resource = Resource.fromJson(response.body)
     expect(response.statusCode).toBe(200)
-    expect(resource).toContainHrefMatching('events', /\/events/)
+    expect(resource).toContainHrefMatching('events', /\/events$/)
   })
 
   test('returns things link', async () => {
@@ -44,7 +44,7 @@ describe('Discovery', () => {
 
     const resource = Resource.fromJson(response.body)
     expect(response.statusCode).toBe(200)
-    expect(resource).toContainHrefMatching('things', /\/things/)
+    expect(resource).toContainHrefMatching('things', /\/things$/)
   })
 
   test('returns thing link', async () => {
@@ -54,6 +54,6 @@ describe('Discovery', () => {
 
     const resource = Resource.fromJson(response.body)
     expect(response.statusCode).toBe(200)
-    expect(resource).toContainHrefMatching('thing', /\/things\/{thingId}/)
+    expect(resource).toContainHrefMatching('thing', /\/things\/{thingId}$/)
   })
 })

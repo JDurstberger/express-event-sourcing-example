@@ -1,15 +1,18 @@
 import { addEvent } from '../events'
 import { project } from './projection'
 import { Database } from '../shared/database'
-import { createThingCreatedEvent } from './events'
+import { createThingCreatedEvent, CreateThingData } from './events'
 import { Thing } from './thing'
 import { getThingById } from './queries'
 
-export const createThing = async (dependencies: {
-  database: Database
-}): Promise<Thing> => {
+export const createThing = async (
+  dependencies: {
+    database: Database
+  },
+  data: CreateThingData
+): Promise<Thing> => {
   const { database } = dependencies
-  const event = createThingCreatedEvent()
+  const event = createThingCreatedEvent(data)
 
   return await database.withTransaction(async (database) => {
     await addEvent(database, event)

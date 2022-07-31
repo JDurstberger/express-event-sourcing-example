@@ -5,6 +5,7 @@ import { createDiscoveryRoutes } from './discovery'
 import { Database } from './shared/database'
 import { createThingRoutes } from './thing'
 import { createEventsRoutes } from './events'
+import bodyParser from 'body-parser'
 
 export type System = {
   app: Express
@@ -15,6 +16,8 @@ export const createSystem = async (
   configuration: Configuration
 ): Promise<System> => {
   const app = express()
+
+  app.use(bodyParser.json())
 
   const database = await Database.create(configuration.database)
 
