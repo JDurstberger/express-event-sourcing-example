@@ -1,7 +1,5 @@
 import dotenv from 'dotenv'
 
-dotenv.config()
-
 export type DatabaseConfiguration = {
   host: string
   port: number
@@ -33,7 +31,11 @@ const getEnvInt = (key: string): number => {
   return Number.parseInt(value)
 }
 
-export const loadConfiguration = (): Configuration => {
+export const loadConfiguration = (options?: {
+  path?: string
+}): Configuration => {
+  dotenv.config(options)
+
   return {
     service: {
       port: getEnvInt('EESE_SERVICE_SERVICE_PORT')

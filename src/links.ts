@@ -3,6 +3,7 @@ import { toPairs } from 'ramda'
 
 export enum Route {
   Discovery,
+  Event,
   Events,
   Thing,
   Things
@@ -12,6 +13,8 @@ export const routeToExpressRoute = (route: Route) => {
   switch (route) {
     case Route.Discovery:
       return '/'
+    case Route.Event:
+      return '/events/:eventId'
     case Route.Events:
       return '/events'
     case Route.Things:
@@ -25,6 +28,8 @@ const routeToTemplate = (route: Route) => {
   switch (route) {
     case Route.Discovery:
       return '/'
+    case Route.Event:
+      return '/events/{eventId}'
     case Route.Events:
       return '/events'
     case Route.Things:

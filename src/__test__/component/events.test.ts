@@ -1,10 +1,9 @@
 import { halMatchers } from '../test-support/hal-matchers'
-import { createSystem } from '../../system'
-import { loadConfiguration } from '../../configuration'
+import { createSystem, System } from '../../system'
+import { loadConfiguration } from '../test-support/configuration'
 import { Resource } from '../../shared/hal'
 import supertest from 'supertest'
 import { clearDatabase } from '../test-support/database'
-import { System } from '../../system'
 
 expect.extend(halMatchers)
 

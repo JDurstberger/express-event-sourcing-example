@@ -1,6 +1,6 @@
 import { halMatchers } from '../test-support/hal-matchers'
 import { createSystem, System } from '../../system'
-import { loadConfiguration } from '../../configuration'
+import { loadConfiguration } from '../test-support/configuration'
 import supertest from 'supertest'
 import { Resource } from '../../shared/hal'
 

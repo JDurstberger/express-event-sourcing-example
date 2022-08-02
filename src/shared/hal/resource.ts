@@ -78,8 +78,22 @@ export class Resource {
     })
   }
 
+  addProperties(properties: Record<string, Property>) {
+    return toPairs(properties).reduce(
+      (resource: Resource, [k, v]) => resource.addProperty(k, v),
+      this
+    )
+  }
+
   getResource(key: string): EmbeddedResource | undefined {
     return this.resources[key]
+  }
+
+  getResourceAt(key: string, index: number): Resource | undefined {
+    const resource = this.resources[key]
+    if (Array.isArray(resource)) return resource[index]
+
+    return [resource][index]
   }
 
   addResource(key: string, embeddedResource: EmbeddedResource) {

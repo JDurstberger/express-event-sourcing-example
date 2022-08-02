@@ -66,6 +66,20 @@ describe('HAL Resource', () => {
 
       expect(property).toStrictEqual(expectedProperty)
     })
+
+    test('adds multiple properties to resource', () => {
+      const key1 = 'k1'
+      const key2 = 'k2'
+      const value1 = 'abc'
+      const value2 = 123
+      const resource = Resource.create().addProperties({
+        [key1]: value1,
+        [key2]: value2
+      })
+
+      expect(resource.getProperty(key1)).toStrictEqual(value1)
+      expect(resource.getProperty(key2)).toStrictEqual(value2)
+    })
   })
 
   describe('embedded resources', () => {
@@ -101,6 +115,51 @@ describe('HAL Resource', () => {
       const embeddedResource = resource.getResource('key')
 
       expect(embeddedResource).toStrictEqual(expectedEmbeddedResources)
+    })
+
+    test('returns resource from index', () => {
+      const key = 'key'
+      const resource1 = Resource.create().addProperty('id', 1)
+      const resource2 = Resource.create().addProperty('id', 2)
+      const resource = Resource.create().addResource(key, [
+        resource1,
+        resource2
+      ])
+
+      const embeddedResource = resource.getResourceAt('key', 0)
+
+      expect(embeddedResource).toStrictEqual(resource1)
+    })
+
+    test('returns undefined when trying to access array resource not available', () => {
+      const key = 'key'
+      const resource = Resource.create().addResource(key, [])
+
+      const embeddedResource = resource.getResourceAt('key', 0)
+
+      expect(embeddedResource).toBeUndefined()
+    })
+
+    test('returns resource when trying to access non-array resource from index 0', () => {
+      const key = 'key'
+      const expectedEmbeddedResource = Resource.create()
+      const resource = Resource.create().addResource(
+        key,
+        expectedEmbeddedResource
+      )
+
+      const embeddedResource = resource.getResourceAt('key', 0)
+
+      expect(embeddedResource).toStrictEqual(expectedEmbeddedResource)
+    })
+
+    test('returns undefined when trying to access non-array resource from index >0', () => {
+      const key = 'key'
+      const resource = Resource.create().addResource(key, Resource.create())
+
+      const embeddedResource = resource.getResourceAt('key', 1)
+
+      expect(embeddedResource).toBeUndefined()
     })
   })
 

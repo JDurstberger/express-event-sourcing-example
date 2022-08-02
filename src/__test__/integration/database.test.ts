@@ -1,10 +1,10 @@
-import { loadConfiguration } from '../../configuration'
 import { clearDatabase } from '../test-support/database'
 import { Database } from '../../shared/database'
 import { addEvent } from '../../events'
 import { randomUUID } from 'crypto'
 import moment from 'moment'
 import { allEvents } from '../../events/queries'
+import { loadConfiguration } from '../test-support/configuration'
 
 const configuration = loadConfiguration()
 let database: Database

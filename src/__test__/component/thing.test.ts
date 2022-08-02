@@ -1,12 +1,12 @@
 import { halMatchers } from '../test-support/hal-matchers'
 import { createSystem, System } from '../../system'
-import { loadConfiguration } from '../../configuration'
 import { Resource } from '../../shared/hal'
 import { extraMatchers } from '../test-support/extra-matchers'
 import supertest from 'supertest'
 import { clearDatabase } from '../test-support/database'
 import { randomUUID } from 'crypto'
 import { randomCreateThingBody, randomName } from '../test-support/data'
+import { loadConfiguration } from '../test-support/configuration'
 
 expect.extend(halMatchers)
 expect.extend(extraMatchers)
@@ -94,8 +94,22 @@ describe('Thing', () => {
 
     const response = await app.get('/events')
 
-    const resource = Resource.fromJson(response.body)
+    const eventsResource = Resource.fromJson(response.body)
+    const eventResource = eventsResource.getResourceAt('events', 0)!
+    const eventId = eventResource.getProperty('id')
     expect(response.statusCode).toBe(200)
-    expect(resource.getResource('events')).toHaveLength(1)
+    expect(eventsResource.getResource('events')).toHaveLength(1)
+    expect(eventId).toBeUuid()
+    expect(eventResource.getProperty('occurredAt')).toBeIso8601()
+    expect(eventResource.getProperty('observedAt')).toBeIso8601()
+    expect(eventResource).toContainProperty('type', 'thing-created')
+    expect(eventResource).toContainHrefMatching(
+      'self',
+      new RegExp(`/events/${eventId}$`)
+    )
+    expect(eventResource).toContainHrefMatching(
+      'thing',
+      new RegExp(`/things/.*$`)
+    )
   })
 })

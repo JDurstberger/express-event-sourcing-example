@@ -130,7 +130,7 @@ namespace :test do
       Rake::Task['database:test:provision'].invoke
     end
 
-    write_env_file(environment)
+    write_env_file(environment, '.env-test')
     sh('yarn test-integration')
   end
 
@@ -149,7 +149,7 @@ namespace :test do
       Rake::Task['database:test:provision'].invoke
     end
 
-    write_env_file(environment)
+    write_env_file(environment, '.env-test')
     sh('yarn test-component')
   end
 
@@ -168,11 +168,11 @@ def env_value_to_string(v)
   (v.kind_of?(Array) || v.kind_of?(Hash)) ? JSON.generate(v) : v.to_s
 end
 
-def write_env_file(environment)
+def write_env_file(environment, filename = '.env')
   contents = environment
                .to_h
                .map { |k, v| "#{k.to_s}=#{env_value_to_string(v)}" }
-  File.open('.env', 'w') { |file|
+  File.open(filename, 'w') { |file|
     contents.each { |line| file.puts(line) }
   }
 end
