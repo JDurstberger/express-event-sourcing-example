@@ -3,7 +3,7 @@ import { Configuration } from './configuration'
 
 import { createDiscoveryRoutes } from './discovery'
 import { Database } from './shared/database'
-import { createThingRoutes } from './thing'
+import { createThingRoutes } from './things'
 import { createEventsRoutes } from './events'
 import bodyParser from 'body-parser'
 
