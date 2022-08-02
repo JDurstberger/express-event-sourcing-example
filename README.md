@@ -13,15 +13,12 @@ This repository is supposed to showcase a very simple implementation.
  * **Rake** as it offers a lot of plugins and is fast and convenient
  * **Hiera** as it provides an easy way to configure for multiple deployments
 
-## Design Decision
-* **HAL/JSON** as it is imho the best way to represent RESTFUL data
-  
-## Prerequisites
- * **rbenv** to install the required ruby for Rake - see .ruby-version
- * **NVM** to install the required node version - see .node-version
- * **docker** to run the database
-
 ## How to Run?
+
+### Prerequisites
+* **rbenv** to install the required ruby for Rake - see .ruby-version
+* **NVM** to install the required node version - see .node-version
+* **docker** to run the database
 
 All commands are executed through the `go` script. 
 The script makes sure that all required dependencies beyond the prerequisites are installed
