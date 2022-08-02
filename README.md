@@ -36,10 +36,10 @@ To find all available tasks `go -T`
 
 ## Tech Stack & Design
 
-* Express.js as the http service
-* Postgresql as the DB
-* Rake as the build system
-* HAL/JSON as the data transfer protocol
+* **Express.js** as the http service
+* **Postgresql** as the DB
+* **Rake** as the build system
+* **HAL/JSON** as the data transfer protocol
  
 
 ## Known Constraints
