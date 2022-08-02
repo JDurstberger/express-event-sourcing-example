@@ -37,6 +37,16 @@ describe('Discovery', () => {
     expect(resource).toContainHrefMatching('events', /\/events$/)
   })
 
+  test('returns event link', async () => {
+    const request = supertest(system.app).get('/')
+
+    const response = await request
+
+    const resource = Resource.fromJson(response.body)
+    expect(response.statusCode).toBe(200)
+    expect(resource).toContainHrefMatching('event', /\/events\/{eventId}$/)
+  })
+
   test('returns things link', async () => {
     const request = supertest(system.app).get('/')
 

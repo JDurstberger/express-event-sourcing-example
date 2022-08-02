@@ -7,10 +7,13 @@ export const createDiscoveryRoutes = (app: Express) => {
     .route(routeToExpressRoute(Route.Discovery))
     .get((request: Request, response: Response) => {
       const resource = Resource.create()
-        .addLink('self', templateFor(request, Route.Discovery))
-        .addLink('events', templateFor(request, Route.Events))
-        .addLink('things', templateFor(request, Route.Things))
-        .addLink('thing', templateFor(request, Route.Thing))
+        .addLinks({
+          self: templateFor(request, Route.Discovery),
+          event: templateFor(request, Route.Event),
+          events: templateFor(request, Route.Events),
+          things: templateFor(request, Route.Things),
+          thing: templateFor(request, Route.Thing)
+        })
         .toJson()
       return response.json(resource)
     })

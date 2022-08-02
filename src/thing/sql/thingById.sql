@@ -1,1 +1,3 @@
-SELECT * FROM projections where id = $1;
+SELECT * FROM projections
+WHERE id = $1
+LIMIT 1;

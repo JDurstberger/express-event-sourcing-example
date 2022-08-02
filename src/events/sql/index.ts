@@ -14,3 +14,8 @@ export const insertEventStatement = fs.readFileSync(
   './src/events/sql/insertEvent.sql',
   'utf8'
 )
+
+export const eventByIdStatement = fs.readFileSync(
+  './src/events/sql/eventById.sql',
+  'utf8'
+)

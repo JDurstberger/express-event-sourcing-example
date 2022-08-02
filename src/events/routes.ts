@@ -1,7 +1,7 @@
 import { Express, Request, Response } from 'express'
 import { Resource } from '../shared/hal'
 import { Database } from '../shared/database'
-import { allEvents } from './queries'
+import { allEvents, findEventById } from './queries'
 import { Event } from './event'
 import { linkFor, Route } from '../links'
 
@@ -39,4 +39,23 @@ export const createEventsRoutes = (
       .toJson()
     return response.json(resource)
   })
+
+  app
+    .route('/events/:eventId')
+    .get(async (request: Request, response: Response) => {
+      const event = await findEventById(database, request.params.eventId)
+
+      if (event)
+        return response
+          .status(200)
+          .json(eventToResource(request, event).toJson())
+      else
+        return response
+          .status(404)
+          .json(
+            Resource.create()
+              .addProperty('error', 'resource not found')
+              .toJson()
+          )
+    })
 }

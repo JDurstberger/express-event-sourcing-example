@@ -1,10 +1,9 @@
 import { clearDatabase } from '../test-support/database'
 import { Database } from '../../shared/database'
 import { addEvent } from '../../events'
-import { randomUUID } from 'crypto'
-import moment from 'moment'
 import { allEvents } from '../../events/queries'
 import { loadConfiguration } from '../test-support/configuration'
+import { randomEvent } from '../test-support/data'
 
 const configuration = loadConfiguration()
 let database: Database
@@ -18,19 +17,9 @@ afterEach(async () => {
   await database.end()
 })
 
-const createTestEvent = () => ({
-  id: randomUUID(),
-  observedAt: moment.utc(),
-  occurredAt: moment.utc(),
-  payload: {},
-  type: 'foo-created',
-  streamType: 'foo',
-  streamId: randomUUID()
-})
-
 describe('Database', () => {
   test('adds event', async () => {
-    const expectedEvent = createTestEvent()
+    const expectedEvent = randomEvent()
 
     await addEvent(database, expectedEvent)
 
@@ -52,8 +41,8 @@ describe('Database', () => {
 
   describe('transaction', () => {
     test('adds two events in transaction', async () => {
-      const event1 = createTestEvent()
-      const event2 = createTestEvent()
+      const event1 = randomEvent()
+      const event2 = randomEvent()
 
       await database.withTransaction(async (database) => {
         await addEvent(database, event1)
@@ -65,7 +54,7 @@ describe('Database', () => {
     })
 
     test('adds no events when exception occurs in transaction', async () => {
-      const event = createTestEvent()
+      const event = randomEvent()
       try {
         await database.withTransaction(async (database) => {
           await addEvent(database, event)

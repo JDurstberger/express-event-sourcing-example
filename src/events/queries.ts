@@ -4,6 +4,7 @@ import moment, { Moment } from 'moment'
 import {
   allEventsForStreamStatement,
   allEventsStatement,
+  eventByIdStatement,
   insertEventStatement
 } from './sql'
 
@@ -51,4 +52,13 @@ export const addEvent = async <T>(database: Database, event: AddEvent<T>) => {
     event.streamType
   ]
   await database.query(insertEventStatement, values)
+}
+
+export const findEventById = async (
+  database: Database,
+  id: string
+): Promise<Event | null> => {
+  const result = await database.query(eventByIdStatement, [id])
+  const dbEvent = result.rows[0]
+  return dbEvent ? dbEventToEvent(dbEvent) : null
 }

@@ -9,6 +9,7 @@ import bodyParser from 'body-parser'
 
 export type System = {
   app: Express
+  database: Database
   shutdown: () => Promise<void>
 }
 
@@ -27,6 +28,7 @@ export const createSystem = async (
 
   return {
     app,
+    database,
     shutdown: async () => await database.end()
   }
 }
