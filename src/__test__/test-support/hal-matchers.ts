@@ -2,6 +2,8 @@ import CustomMatcher = jest.CustomMatcher
 import CustomMatcherResult = jest.CustomMatcherResult
 import { Resource } from '../../shared/hal'
 import { Property } from '../../shared/hal/resource'
+import { keys } from 'ramda'
+import { areSetsEqual } from '../../shared/set'
 
 const toContainHref: CustomMatcher = (
   received: Resource,
@@ -20,6 +22,31 @@ const toContainHref: CustomMatcher = (
         `Resource ${JSON.stringify(
           received.toJson()
         )} did not contain ${rel} with value ${url}`,
+      pass: false
+    }
+  }
+}
+
+const toContainLinkRels: CustomMatcher = (
+  received: Resource,
+  rels: Array<string>
+): CustomMatcherResult => {
+  const expectedLinkRelations = new Set(rels)
+  const linkRelations = new Set(keys(received.links))
+  const pass = areSetsEqual(expectedLinkRelations, linkRelations)
+  if (pass) {
+    return {
+      message: () => `hal resource contained rels`,
+      pass: true
+    }
+  } else {
+    return {
+      message: () =>
+        `Resource link relations ${JSON.stringify(
+          linkRelations
+        )} of ${JSON.stringify(
+          received.toJson()
+        )} did not match ${JSON.stringify(rels)}`,
       pass: false
     }
   }
@@ -71,13 +98,16 @@ const toContainProperty: CustomMatcher = (
 export const halMatchers = {
   toContainHref,
   toContainProperty,
-  toContainHrefMatching
+  toContainHrefMatching,
+  toContainLinkRels
 }
 
 interface HalMatchers<R = unknown> {
   toContainHref(rel: string, url: string): R
 
   toContainHrefMatching(rel: string, regex: RegExp): R
+
+  toContainLinkRels(rels: Array<string>): R
 
   toContainProperty(key: string, value: Property): R
 }

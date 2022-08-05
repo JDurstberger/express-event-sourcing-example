@@ -28,3 +28,25 @@ export const createThingCreatedEvent = (
     streamId: thingId
   }
 }
+
+export type ThingDeletedPayload = Record<string, never>
+
+export type DeleteThingData = {
+  id: string
+}
+
+export const createThingDeletedEvent = (
+  data: DeleteThingData
+): AddEvent<ThingDeletedPayload> => {
+  const eventId = randomUUID()
+  const now = moment.utc()
+  return {
+    id: eventId,
+    observedAt: now,
+    occurredAt: now,
+    payload: {},
+    type: 'thing-deleted',
+    streamType: 'thing',
+    streamId: data.id
+  }
+}

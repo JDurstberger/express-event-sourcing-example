@@ -5,7 +5,8 @@ import { thingByIdStatement } from './sql'
 const dbThingToThing = (thing: any): Thing => {
   return {
     id: thing.id,
-    name: thing.payload.name
+    name: thing.payload.name,
+    hardDeleted: false
   }
 }
 

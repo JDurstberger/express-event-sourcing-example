@@ -3,7 +3,7 @@ import { Resource } from '../shared/hal'
 import { Database } from '../shared/database'
 import { findThingById } from './queries'
 import { Thing } from './thing'
-import { createThing } from './commands'
+import { createThing, deleteThing } from './commands'
 import { linkFor, Route } from '../links'
 import { validateCreateThing } from './validations'
 import { ValidationError } from 'joi'
@@ -60,5 +60,23 @@ export const createThingRoutes = (
               .addProperty('error', 'resource not found')
               .toJson()
           )
+    })
+
+  app
+    .route('/things/:thingId')
+    .delete(async (request: Request, response: Response) => {
+      const thing = await findThingById(database, request.params.thingId)
+
+      if (thing === null)
+        return response
+          .status(404)
+          .json(
+            Resource.create()
+              .addProperty('error', 'resource not found')
+              .toJson()
+          )
+
+      await deleteThing(dependencies, thing)
+      return response.status(200).send()
     })
 }

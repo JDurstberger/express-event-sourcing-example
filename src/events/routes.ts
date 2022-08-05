@@ -2,24 +2,10 @@ import { Express, Request, Response } from 'express'
 import { Resource } from '../shared/hal'
 import { Database } from '../shared/database'
 import { allEvents, findEventById } from './queries'
-import { Event } from './event'
-import { linkFor, Route } from '../links'
+import { eventToResource } from './mapping'
 
 const buildSelf = ({ protocol, headers, url }: Request) =>
   `${protocol}://${headers['host']}${url}`
-
-const eventToResource = (request: Request, event: Event) =>
-  Resource.create()
-    .addLinks({
-      self: linkFor(request, Route.Event, { eventId: event.id }),
-      thing: linkFor(request, Route.Thing, { thingId: event.streamId })
-    })
-    .addProperties({
-      id: event.id,
-      type: event.type,
-      occurredAt: event.occurredAt,
-      observedAt: event.observedAt
-    })
 
 export const createEventsRoutes = (
   app: Express,

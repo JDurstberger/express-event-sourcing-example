@@ -118,8 +118,6 @@ namespace :test do
       deployment_type: 'local',
       deployment_label: 'testing')
 
-    puts args
-
     configuration = configuration
                       .for_scope(args.to_h.merge(role: 'test'))
     environment = configuration

@@ -1,6 +1,6 @@
 import { Database } from '../database'
 import { Moment } from 'moment'
-import { upsertProjectionStatement } from './sql'
+import { deleteProjectionStatement, upsertProjectionStatement } from './sql'
 
 export type UpsertProjection = {
   id: string
@@ -24,4 +24,8 @@ export const upsertProjection = async (
     projection.payload
   ]
   await database.query(upsertProjectionStatement, values)
+}
+
+export const deleteProjection = async (database: Database, id: string) => {
+  await database.query(deleteProjectionStatement, [id])
 }
