@@ -4,7 +4,7 @@ import moment from 'moment'
 
 export const randomName = () => faker.name.findName()
 
-export const randomCreateThingBody = (overrides: { name?: string } = {}) => ({
+export const randomThingBody = (overrides: { name?: string } = {}) => ({
   name: randomName(),
   ...overrides
 })

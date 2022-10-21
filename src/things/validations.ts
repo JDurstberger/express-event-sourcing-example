@@ -5,5 +5,5 @@ const createThingPostBodySchema = Joi.object({
   name: Joi.string().required()
 })
 
-export const validateCreateThing = (request: Request) =>
+export const validateThing = (request: Request) =>
   createThingPostBodySchema.validate(request.body)

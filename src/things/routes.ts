@@ -3,9 +3,9 @@ import { Resource } from '../shared/hal'
 import { Database } from '../shared/database'
 import { findThingById } from './queries'
 import { Thing } from './thing'
-import { createThing, deleteThing } from './commands'
+import { createThing, deleteThing, updateThing } from './commands'
 import { linkFor, Route } from '../links'
-import { validateCreateThing } from './validations'
+import { validateThing } from './validations'
 import { ValidationError } from 'joi'
 
 const validationErrorToResource = (
@@ -29,7 +29,7 @@ export const createThingRoutes = (
   const { database } = dependencies
 
   app.route('/things').post(async (request: Request, response: Response) => {
-    const validationResult = validateCreateThing(request)
+    const validationResult = validateThing(request)
 
     if (validationResult.error) {
       return response
@@ -43,6 +43,32 @@ export const createThingRoutes = (
 
     return response.status(201).json(thingToResource(request, thing).toJson())
   })
+
+  app
+    .route('/things/:thingId')
+    .put(async (request: Request, response: Response) => {
+      let thing = await findThingById(database, request.params.thingId)
+      if (thing === null)
+        return response
+          .status(404)
+          .json(
+            Resource.create()
+              .addProperty('error', 'resource not found')
+              .toJson()
+          )
+
+      const validationResult = validateThing(request)
+      if (validationResult.error) {
+        return response
+          .status(422)
+          .json(
+            validationErrorToResource(request, validationResult.error).toJson()
+          )
+      }
+
+      thing = await updateThing(dependencies, thing.id, validationResult.value)
+      return response.status(200).json(thingToResource(request, thing).toJson())
+    })
 
   app
     .route('/things/:thingId')

@@ -5,7 +5,7 @@ import { extraMatchers } from '../test-support/extra-matchers'
 import supertest from 'supertest'
 import { clearDatabase } from '../test-support/database'
 import { randomUUID } from 'crypto'
-import { randomCreateThingBody } from '../test-support/data'
+import { randomThingBody } from '../test-support/data'
 import { loadConfiguration } from '../test-support/configuration'
 
 expect.extend(halMatchers)
@@ -38,7 +38,7 @@ describe('Thing Deletion', () => {
     const app = supertest(system.app)
     const creationResponse = await app
       .post('/things')
-      .send(randomCreateThingBody())
+      .send(randomThingBody())
     const createdThing = Resource.fromJson(creationResponse.body)
     await app.del(`/things/${createdThing.getProperty('id')}`)
 
@@ -47,7 +47,6 @@ describe('Thing Deletion', () => {
     expect(response.statusCode).toBe(200)
     const eventsResource = Resource.fromJson(response.body)
     const eventResource = eventsResource.getResourceAt('events', 1)!
-    expect(response.statusCode).toBe(200)
     expect(eventResource).toContainLinkRels(['self'])
     expect(eventsResource.getResource('events')).toHaveLength(2)
     expect(eventResource.getProperty('occurredAt')).toBeIso8601()
@@ -62,7 +61,7 @@ describe('Thing Deletion', () => {
     const app = supertest(system.app)
     const creationResponse = await app
       .post('/things')
-      .send(randomCreateThingBody())
+      .send(randomThingBody())
     const createdThing = Resource.fromJson(creationResponse.body)
     await app.del(`/things/${createdThing.getProperty('id')}`)
 

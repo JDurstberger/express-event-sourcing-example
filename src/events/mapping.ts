@@ -13,6 +13,16 @@ const attachThingCreatedEventCharacteristics = (
     linkFor(request, Route.Thing, { thingId: event.streamId })
   )
 
+const attachThingUpdatedEventCharacteristics = (
+  request: Request,
+  resource: Resource,
+  event: Event
+) =>
+  resource.addLink(
+    'thing',
+    linkFor(request, Route.Thing, { thingId: event.streamId })
+  )
+
 const createBaseResource = (request: Request, event: Event) =>
   Resource.create()
     .addLinks({
@@ -31,6 +41,8 @@ export const eventToResource = (request: Request, event: Event) => {
   switch (event.type) {
     case 'thing-created':
       return attachThingCreatedEventCharacteristics(request, resource, event)
+    case 'thing-updated':
+      return attachThingUpdatedEventCharacteristics(request, resource, event)
     default:
       return resource
   }

@@ -5,7 +5,7 @@ import { extraMatchers } from '../test-support/extra-matchers'
 import supertest from 'supertest'
 import { clearDatabase } from '../test-support/database'
 import { randomUUID } from 'crypto'
-import { randomCreateThingBody } from '../test-support/data'
+import { randomThingBody } from '../test-support/data'
 import { loadConfiguration } from '../test-support/configuration'
 
 expect.extend(halMatchers)
@@ -39,7 +39,7 @@ describe('Thing Lookup', () => {
     const app = supertest(system.app)
     const creationResponse = await app
       .post('/things')
-      .send(randomCreateThingBody())
+      .send(randomThingBody())
     const createdResource = Resource.fromJson(creationResponse.body)
     const path = new URL(createdResource.getHref('self')!).pathname
     const request = app.get(path)

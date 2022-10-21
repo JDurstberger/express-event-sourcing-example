@@ -6,7 +6,16 @@ export type ThingCreatedPayload = {
   name: string
 }
 
+export type ThingUpdatedPayload = {
+  name: string
+}
+
 export type CreateThingData = {
+  name: string
+}
+
+export type UpdateThingData = {
+  id: string,
   name: string
 }
 
@@ -24,6 +33,25 @@ export const createThingCreatedEvent = (
       name: data.name
     },
     type: 'thing-created',
+    streamType: 'thing',
+    streamId: thingId
+  }
+}
+
+export const createThingUpdatedEvent = (
+  thingId: string,
+  data: UpdateThingData
+): AddEvent<ThingUpdatedPayload> => {
+  const eventId = randomUUID()
+  const now = moment.utc()
+  return {
+    id: eventId,
+    observedAt: now,
+    occurredAt: now,
+    payload: {
+      name: data.name
+    },
+    type: 'thing-updated',
     streamType: 'thing',
     streamId: thingId
   }

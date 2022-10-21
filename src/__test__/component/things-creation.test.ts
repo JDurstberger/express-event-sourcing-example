@@ -4,7 +4,7 @@ import { Resource } from '../../shared/hal'
 import { extraMatchers } from '../test-support/extra-matchers'
 import supertest from 'supertest'
 import { clearDatabase } from '../test-support/database'
-import { randomCreateThingBody, randomName } from '../test-support/data'
+import { randomThingBody, randomName } from '../test-support/data'
 import { loadConfiguration } from '../test-support/configuration'
 
 expect.extend(halMatchers)
@@ -26,7 +26,7 @@ describe('Thing Creation', () => {
   test('creates thing', async () => {
     const app = supertest(system.app)
     const name = randomName()
-    const postBody = randomCreateThingBody({ name })
+    const postBody = randomThingBody({ name })
     const request = app.post('/things').send(postBody)
 
     const response = await request
