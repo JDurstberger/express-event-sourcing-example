@@ -22,6 +22,8 @@ const reduceThingEvent = (acc: object, event: Event) => {
   switch (event.type) {
     case 'thing-created':
       return applyCreationEvent(acc, event)
+    case 'thing-updated':
+      return applyUpdateEvent(acc, event)
     case 'thing-deleted':
       return applyDeletionEvent(acc)
     default:
@@ -30,6 +32,12 @@ const reduceThingEvent = (acc: object, event: Event) => {
 }
 
 const applyCreationEvent = (acc: object, event: Event) => ({
+  ...acc,
+  id: event.streamId,
+  name: event.payload.name
+})
+
+const applyUpdateEvent = (acc: object, event: Event) => ({
   ...acc,
   id: event.streamId,
   name: event.payload.name
