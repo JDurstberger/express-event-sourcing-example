@@ -47,7 +47,6 @@ describe('Thing Deletion', () => {
     expect(response.statusCode).toBe(200)
     const eventsResource = Resource.fromJson(response.body)
     const eventResource = eventsResource.getResourceAt('events', 1)!
-    expect(response.statusCode).toBe(200)
     expect(eventResource).toContainLinkRels(['self'])
     expect(eventsResource.getResource('events')).toHaveLength(2)
     expect(eventResource.getProperty('occurredAt')).toBeIso8601()
