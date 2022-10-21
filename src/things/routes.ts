@@ -5,7 +5,7 @@ import { findThingById } from './queries'
 import { Thing } from './thing'
 import { createThing, deleteThing, updateThing } from './commands'
 import { linkFor, Route } from '../links'
-import { validateCreateThing } from './validations'
+import { validateThing } from './validations'
 import { ValidationError } from 'joi'
 
 const validationErrorToResource = (
@@ -29,7 +29,7 @@ export const createThingRoutes = (
   const { database } = dependencies
 
   app.route('/things').post(async (request: Request, response: Response) => {
-    const validationResult = validateCreateThing(request)
+    const validationResult = validateThing(request)
 
     if (validationResult.error) {
       return response
@@ -57,7 +57,7 @@ export const createThingRoutes = (
               .toJson()
           )
 
-      const validationResult = validateCreateThing(request)
+      const validationResult = validateThing(request)
       if (validationResult.error) {
         return response
           .status(422)

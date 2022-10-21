@@ -5,7 +5,7 @@ import { extraMatchers } from '../test-support/extra-matchers'
 import supertest from 'supertest'
 import { clearDatabase } from '../test-support/database'
 import { randomUUID } from 'crypto'
-import { randomCreateThingBody} from '../test-support/data'
+import { randomThingBody} from '../test-support/data'
 import { loadConfiguration } from '../test-support/configuration'
 
 expect.extend(halMatchers)
@@ -38,12 +38,12 @@ describe('Thing Update', () => {
     const app = supertest(system.app)
     const creationResponse = await app
       .post('/things')
-      .send(randomCreateThingBody())
+      .send(randomThingBody())
     const createdThing = Resource.fromJson(creationResponse.body)
     const thingId = createdThing.getProperty('id');
     await app
       .put(`/things/${thingId}`)
-      .send(randomCreateThingBody())
+      .send(randomThingBody())
 
     const response = await app.get('/events')
 
@@ -68,7 +68,7 @@ describe('Thing Update', () => {
     const app = supertest(system.app)
     const creationResponse = await app
       .post('/things')
-      .send(randomCreateThingBody())
+      .send(randomThingBody())
     const createdThing = Resource.fromJson(creationResponse.body)
     const request = app.put(`/things/${createdThing.getProperty('id')}`).send({})
 
