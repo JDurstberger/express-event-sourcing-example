@@ -38,6 +38,8 @@ GEM
     jmespath (1.6.1)
     minitest (5.16.2)
     multi_json (1.15.0)
+    nokogiri (1.13.7-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.13.7-x86_64-darwin)
       racc (~> 1.4)
     partialruby (0.3.0)
@@ -66,6 +68,7 @@ GEM
       concurrent-ruby (~> 1.0)
 
 PLATFORMS
+  arm64-darwin-24
   x86_64-darwin-21
 
 DEPENDENCIES

@@ -12,13 +12,15 @@ import moment from 'moment'
 export const project = async (database: Database, id: string) => {
   const events = await allEventsForStream(database, id)
 
-  const thing = events.reduce(reduceThingEvent, {}) as Thing
+  const thing = events.reduce(reduceThingEvent, {} as Thing)
 
-  if (thing.hardDeleted) return deleteThing(database, thing)
-  else return upsertThing(database, thing)
+  if (thing.hardDeleted)
+    return deleteThing(database, thing)
+  else
+    return upsertThing(database, thing)
 }
 
-const reduceThingEvent = (acc: object, event: Event) => {
+const reduceThingEvent = (acc: Thing, event: Event) => {
   switch (event.type) {
     case 'thing-created':
       return applyCreationEvent(acc, event)
@@ -29,13 +31,13 @@ const reduceThingEvent = (acc: object, event: Event) => {
   }
 }
 
-const applyCreationEvent = (acc: object, event: Event) => ({
-  ...acc,
+const applyCreationEvent = (_: Thing, event: Event): Thing => ({
   id: event.streamId,
-  name: event.payload.name
+  name: event.payload.name,
+  hardDeleted: false
 })
 
-const applyDeletionEvent = (acc: object) => ({
+const applyDeletionEvent = (acc: Thing): Thing => ({
   ...acc,
   hardDeleted: true
 })
